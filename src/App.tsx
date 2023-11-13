@@ -1,16 +1,16 @@
 import React from "react";
 import "./App.css";
-import { ThemeProvider as MuiTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "./provider/ThemeProvider";
-import { Typography } from "@mui/material";
+import RouterProvider from "./routes";
 
 function App() {
   const { theme } = useTheme();
 
   return (
-    <MuiTheme theme={theme}>
-      <Typography>Main page</Typography>
-    </MuiTheme>
+    <ThemeProvider theme={theme}>
+      <RouterProvider />
+    </ThemeProvider>
   );
 }
 

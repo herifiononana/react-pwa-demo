@@ -3,7 +3,7 @@ import Navbar from "../components/navigation/Navbar";
 import VoiceMemo from "./voiceMemo";
 import Home from "./home";
 import More from "./more";
-import { Box, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 
 const HOME_PAGES = [<Home />, <VoiceMemo />, <More />];
 
@@ -13,20 +13,22 @@ function Main() {
   const switchToPage = (page: number) => setCurrentPage(page);
 
   return (
-    <div>
-      <Box sx={{ paddingInline: 2 }}>{HOME_PAGES[currentPage]}</Box>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+      }}
+    >
+      <Box sx={{ height: "100%" }}>{HOME_PAGES[currentPage]}</Box>
 
-      <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
-        elevation={3}
-      >
-        <Navbar
-          switchToHome={() => switchToPage(0)}
-          switchToMemo={() => switchToPage(1)}
-          switchToMore={() => switchToPage(2)}
-        />
-      </Paper>
-    </div>
+      <Navbar
+        switchToHome={() => switchToPage(0)}
+        switchToMemo={() => switchToPage(1)}
+        switchToMore={() => switchToPage(2)}
+      />
+    </Box>
   );
 }
 

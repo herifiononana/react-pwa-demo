@@ -8,6 +8,7 @@ function SearchInput({ handleChange }: { handleChange: () => void }) {
       variant="outlined"
       size="small"
       fullWidth
+      placeholder="Rechercher"
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

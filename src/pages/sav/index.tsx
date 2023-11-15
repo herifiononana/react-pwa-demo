@@ -7,58 +7,38 @@ import {
   Select,
   TextField,
   Typography,
-  // makeStyles,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SearchIcon from "@mui/icons-material/Search";
-import TextInput from "../../components/input/textInput";
+import useStyles from "./styles";
 
+// todo: remove input border
 function SAV() {
+  const classes = useStyles();
   return (
-    <Box
-      sx={{
-        height: "90vh",
-        overflowY: "auto",
-        display: "flex",
-        flexDirection: "column",
-        padding: 1,
-      }}
-    >
-      <Typography
-        sx={{ width: "100%", textAlign: "center", fontSize: "1.2rem" }}
-      >
-        FRED ALLARD
-      </Typography>
+    <Box className={classes.container}>
+      <Typography className={classes.title}>FRED ALLARD</Typography>
       <Box sx={{ width: "100%" }}>
-        <IconButton>
-          <ArrowBackIosIcon sx={{ color: "blue" }} />
+        <IconButton className={classes.iconButton}>
+          <ArrowBackIosIcon sx={{ color: "blue", fontSize: ".8rem" }} />
         </IconButton>
       </Box>
 
       <Box>
-        <Typography sx={{ textAlign: "center", fontSize: ".7rem" }}>
+        <Typography
+          className={[classes.subTitle, classes.textCenter].join(" ")}
+        >
           PROFIL CLIENT
         </Typography>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            marginBottom: 3,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: "25px",
-            background: "linear-gradient(to bottom right, #f0f0f0, #ffffff)",
-          }}
-        >
+        <Box className={classes.profilClientContainer}>
           <TextField
             placeholder="Nom du client"
             sx={{
-              width: "85%",
-              border: 0,
               "& fieldset": {
                 border: "none",
               },
+              backgroundColor: "white",
             }}
           />
           <IconButton>
@@ -66,24 +46,14 @@ function SAV() {
           </IconButton>
         </Box>
       </Box>
-      <Box>
-        <Typography sx={{ fontSize: ".7rem" }}>PROFIL CLIENT</Typography>
-        <TextInput placeholder="Adresse e-mail" />
-        <TextInput placeholder="Numero de telephone" />
-        <Select
-          placeholder="Nationalite"
-          sx={{
-            width: "100%",
-            display: "flex",
-            marginBottom: 3,
-            border: 0,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: "25px",
-            background: "linear-gradient(to bottom right, #f0f0f0, #ffffff)",
-          }}
-          style={{ border: "none" }}
-        >
+      <Box sx={{ marginBottom: 2 }}>
+        <Typography className={classes.subTitle}>PROFIL CLIENT</Typography>
+        <TextField placeholder="Adresse e-mail" className={classes.textfield} />
+        <TextField
+          placeholder="Numero de telephone"
+          className={classes.textfield}
+        />
+        <Select placeholder="Nationalite" className={classes.select}>
           <MenuItem>Francais</MenuItem>
           <MenuItem>Americain</MenuItem>
         </Select>
@@ -97,60 +67,39 @@ function SAV() {
         }}
       >
         <Box sx={{ width: "50%", textAlign: "center" }}>
-          <Typography sx={{ fontSize: ".7rem" }}>
+          <Typography className={classes.textNormalSize}>
             SUSCEPTIBILITE D'ACHAT
           </Typography>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              overflowX: "auto",
-              flexWrap: "nowrap",
-            }}
-          >
-            <IconButton
-              sx={{
-                background:
-                  "linear-gradient(to bottom right, #f0f0f0, #ffffff)",
-                width: "2rem",
-                height: "2rem",
-              }}
-            >
+          <Box className={classes.susceptibilityContainer}>
+            <IconButton className={classes.iconButton}>
               <Typography>1</Typography>
             </IconButton>
-            <IconButton
-              sx={{
-                background:
-                  "linear-gradient(to bottom right, #f0f0f0, #ffffff)",
-                width: "2rem",
-                height: "2rem",
-              }}
-            >
+            <IconButton className={classes.iconButton}>
               <Typography>2</Typography>
             </IconButton>
-            <IconButton
-              sx={{
-                background:
-                  "linear-gradient(to bottom right, #f0f0f0, #ffffff)",
-                width: "2rem",
-                height: "2rem",
-              }}
-            >
+            <IconButton className={classes.iconButton}>
               <Typography>3</Typography>
             </IconButton>
           </Box>
         </Box>
-        <Box sx={{ width: "50%", textAlign: "center" }}>
-          <Typography sx={{ fontSize: ".7rem" }}>
+        <Box sx={{ width: "50%" }} className={classes.textCenter}>
+          <Typography className={classes.textNormalSize}>
             DATE DE PRISE DE CONTACT
           </Typography>
-          <DatePicker sx={{ border: "none" }} />
+          <DatePicker
+            sx={{
+              border: "none",
+              "& fieldset": {
+                border: "none",
+              },
+            }}
+          />
         </Box>
       </Box>
       <Box>
-        <Typography sx={{ fontSize: ".7rem" }}>INFORMATIONS CLIENT</Typography>
+        <Typography className={classes.textNormalSize}>
+          INFORMATIONS CLIENT
+        </Typography>
         <TextField
           multiline
           rows={7}
@@ -158,10 +107,7 @@ function SAV() {
           sx={{ width: "100%", marginBottom: 3 }}
         />
       </Box>
-      <Button
-        variant="contained"
-        sx={{ width: "70%", borderRadius: "25px", alignSelf: "center" }}
-      >
+      <Button variant="contained" className={classes.submitButton}>
         ENREGISTRER
       </Button>
     </Box>

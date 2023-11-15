@@ -1,6 +1,5 @@
 import React from "react";
-import { Box, List, IconButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, List } from "@mui/material";
 import CardCatalogue from "../../components/cardCatalogue";
 import { MENUS } from "../../constants/constants";
 import CategoryButton from "../../components/buttons/categoryButton";

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import Navbar from "../components/navigation/Navbar";
+// import Navbar fro../components/navigation/NavbarNativebar";
 import VoiceMemo from "./voiceMemo";
 import Home from "./home";
-import More from "./more";
 import { Box } from "@mui/material";
+import SAV from "./sav";
+import Catalog from "./catalog";
+import Navbar from "../components/navigation/Navbar";
 
-const HOME_PAGES = [<Home />, <VoiceMemo />, <More />];
+// todo: all page not specified
+const HOME_PAGES = [<Home />, <VoiceMemo />, <Catalog />, <SAV />];
 
 function Main() {
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -27,6 +30,8 @@ function Main() {
         switchToHome={() => switchToPage(0)}
         switchToMemo={() => switchToPage(1)}
         switchToMore={() => switchToPage(2)}
+        switchToSAV={() => switchToPage(3)}
+        switchToCatalog={() => switchToPage(2)}
       />
     </Box>
   );

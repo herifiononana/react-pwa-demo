@@ -34,6 +34,7 @@ const TextInput = styled(TextField)({
 const ErrorMessage = styled(Typography)({
   fontSize: ".7rem",
   color: "red",
+  paddingInlineStart: 10,
 });
 
 const SubmitButton = styled(Button)({

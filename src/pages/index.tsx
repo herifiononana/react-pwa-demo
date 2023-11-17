@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import Navbar fro../components/navigation/NavbarNativebar";
 import VoiceMemo from "./voiceMemo";
 import Home from "./home";
 import { Box } from "@mui/material";
@@ -22,16 +21,17 @@ function Main() {
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "column",
+        overflowX: "hidden",
       }}
     >
       <Box sx={{ height: "100%" }}>{HOME_PAGES[currentPage]}</Box>
 
       <Navbar
         switchToHome={() => switchToPage(0)}
-        switchToMemo={() => switchToPage(1)}
-        switchToMore={() => switchToPage(2)}
         switchToSAV={() => switchToPage(3)}
         switchToCatalog={() => switchToPage(2)}
+        switchToClient={() => switchToPage(0)}
+        switchToCommand={() => switchToPage(1)}
       />
     </Box>
   );

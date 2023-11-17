@@ -30,10 +30,10 @@ function CardActionItem({
         color: "white",
       }}
     >
-      <Typography sx={{ fontWeight: "bold" }}>
+      <Typography sx={{ fontWeight: "bold", fontSize: ".9rem" }}>
         {title.toLocaleUpperCase()}
       </Typography>
-      <Typography>{description}</Typography>
+      <Typography sx={{ fontSize: ".8rem" }}>{description}</Typography>
     </Box>
   );
 }

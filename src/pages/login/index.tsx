@@ -1,8 +1,14 @@
 import React from "react";
-import useStyles from "./styles";
-import Button from "@mui/material/Button";
+import {
+  Container,
+  HeadContainer,
+  SubmitButton,
+  TextInput,
+  Title,
+  ErrorMessage,
+} from "./styles";
 import { useNavigate } from "react-router-dom";
-import { Box, Divider, Link, TextField, Typography } from "@mui/material";
+import { Box, Divider, Link } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -26,7 +32,6 @@ const initialValues: Credential = {
 
 function Login() {
   const navigate = useNavigate();
-  const classes = useStyles();
 
   const formik = useFormik({
     validationSchema,
@@ -43,53 +48,48 @@ function Login() {
   const { errors, values, handleSubmit, isSubmitting, handleChange } = formik;
 
   return (
-    <Box className={classes.container}>
-      <Box className={classes.headContainer}>
+    <Container>
+      <HeadContainer>
         <Divider sx={{ width: "100%" }} />
-        <Typography className={classes.title}>Connexion</Typography>
+        <Title>Connexion</Title>
         <Divider sx={{ width: "100%" }} />
-      </Box>
+      </HeadContainer>
 
-      <form action="#" onSubmit={handleSubmit}>
-        <TextField
-          placeholder="Adresse e-mail"
-          className={classes.input}
-          name="email"
-          fullWidth
-          value={values.email}
-          onChange={handleChange}
-        />
-        {errors.email && (
-          <Typography className={classes.error}>{errors.email}</Typography>
-        )}
-        <TextField
-          placeholder="Mot de passe"
-          className={classes.input}
-          name="password"
-          type="password"
-          fullWidth
-          value={values.password}
-          onChange={handleChange}
-        />
-        {errors.password && (
-          <Typography className={classes.error}>{errors.password}</Typography>
-        )}
-        <Button
-          variant="contained"
-          type="submit"
-          onSubmit={() => handleSubmit()}
-          onClick={() => handleSubmit()}
-          fullWidth
-          className={classes.submitButton}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Veuillez patienter" : "Se connecter"}
-        </Button>
-      </form>
+      <Box sx={{ width: "100%" }}>
+        <form action="#" onSubmit={handleSubmit}>
+          <TextInput
+            placeholder="Adresse e-mail"
+            name="email"
+            fullWidth
+            value={values.email}
+            onChange={handleChange}
+          />
+          {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+          <TextInput
+            placeholder="Mot de passe"
+            name="password"
+            type="password"
+            fullWidth
+            value={values.password}
+            onChange={handleChange}
+          />
+          {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+          <SubmitButton
+            variant="contained"
+            type="submit"
+            onSubmit={() => handleSubmit()}
+            onClick={() => handleSubmit()}
+            fullWidth
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Veuillez patienter" : "Se connecter"}
+          </SubmitButton>
+        </form>
+      </Box>
       <Link sx={{ fontSize: ".8rem", textDecoration: "none" }}>
         Mot de passe oublier ?
       </Link>
-    </Box>
+    </Container>
   );
 }
 

@@ -5,9 +5,10 @@ import { Box } from "@mui/material";
 import SAV from "./sav";
 import Catalog from "./catalog";
 import Navbar from "../components/navigation/Navbar";
+import Profil from "./profil";
 
 // todo: all page not specified
-const HOME_PAGES = [<Home />, <VoiceMemo />, <Catalog />, <SAV />];
+const HOME_PAGES = [<Home />, <VoiceMemo />, <Catalog />, <SAV />, <Profil />];
 
 function Main() {
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -30,7 +31,7 @@ function Main() {
         switchToHome={() => switchToPage(0)}
         switchToSAV={() => switchToPage(3)}
         switchToCatalog={() => switchToPage(2)}
-        switchToClient={() => switchToPage(0)}
+        switchToClient={() => switchToPage(4)}
         switchToCommand={() => switchToPage(1)}
       />
     </Box>

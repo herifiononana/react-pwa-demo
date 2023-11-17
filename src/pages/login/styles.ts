@@ -33,4 +33,8 @@ export default makeStyles({
     marginTop: 10,
     marginBottom: 10,
   },
+  error: {
+    fontSize: ".7rem",
+    color: "red",
+  },
 });

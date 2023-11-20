@@ -54,8 +54,8 @@ function VoiceMemo() {
         }}
         subheader={<li />}
       >
-        {MENUS.map(({ title, description, backgroundImageSource }) => (
-          <Box sx={{ height: "50%", marginBottom: 2 }}>
+        {MENUS.map(({ title, description, backgroundImageSource }, index) => (
+          <Box sx={{ height: "50%", marginBottom: 2 }} key={index}>
             <CardCatalogue {...{ title, description, backgroundImageSource }} />
           </Box>
         ))}

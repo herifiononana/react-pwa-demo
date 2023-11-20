@@ -13,9 +13,9 @@ function Profil() {
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
+        height: "100vh",
         padding: 1,
+        overflow: "hidden",
         backgroundColor: "#f0f0f0",
       }}
     >

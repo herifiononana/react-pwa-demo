@@ -4,6 +4,7 @@ export interface Menu {
   title: string;
   description: string;
   backgroundImageSource: string;
+  action?: boolean;
 }
 
 export const MENUS: Menu[] = [
@@ -30,5 +31,12 @@ export const MENUS: Menu[] = [
     description: "Creer et gerer les demandes SAV",
     backgroundImageSource:
       "https://png.pngtree.com/thumb_back/fw800/background/20230630/pngtree-d-sale-theme-dark-abstract-typography-background-with-trendy-gray-black-image_3691718.jpg",
+  },
+  {
+    title: "Profil",
+    description: "Acceder a votre profile",
+    backgroundImageSource:
+      "https://img.freepik.com/free-photo/abstract-luxury-gradient-blue-background-smooth-dark-blue-with-black-vignette-studio-banner_1258-54565.jpg",
+    action: true,
   },
 ];

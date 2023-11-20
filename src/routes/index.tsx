@@ -4,15 +4,21 @@ import {
 } from "react-router-dom";
 import Main from "../pages";
 import Login from "../pages/login";
+import Profil from "../pages/profil";
+import ROUTE from "./route";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTE.LOGIN,
     element: <Login />,
   },
   {
-    path: "/home",
+    path: ROUTE.HOME,
     element: <Main />,
+  },
+  {
+    path: ROUTE.PROFIL,
+    element: <Profil />,
   },
 ]);
 

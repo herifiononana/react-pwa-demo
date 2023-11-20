@@ -6,12 +6,16 @@ interface CardActionItemProps {
   title: string;
   description: string;
   backgroundImageSource: string;
+
+  // todo: change to required
+  action?: () => void;
 }
 
 function CardActionItem({
   title,
   description,
   backgroundImageSource,
+  action = () => {},
 }: CardActionItemProps) {
   return (
     <Box
@@ -29,6 +33,7 @@ function CardActionItem({
         justifyContent: "center",
         color: "white",
       }}
+      onClick={action}
     >
       <Typography sx={{ fontWeight: "bold", fontSize: ".9rem" }}>
         {title.toLocaleUpperCase()}

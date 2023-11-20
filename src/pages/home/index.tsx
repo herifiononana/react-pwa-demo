@@ -4,8 +4,10 @@ import { Box, Typography } from "@mui/material";
 import CardActionItem from "../../components/cardMenuItem";
 import { MENUS } from "../../constants/constants";
 import AddButton from "../../components/buttons/addButton";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -39,8 +41,11 @@ function Home() {
           justifyContent: "space-around",
         }}
       >
-        {MENUS.map(({ title, description, backgroundImageSource }) => (
-          <CardActionItem {...{ title, description, backgroundImageSource }} />
+        {MENUS.map(({ title, description, backgroundImageSource, action }) => (
+          <CardActionItem
+            {...{ title, description, backgroundImageSource }}
+            action={action ? () => navigate("/home/profile") : () => {}}
+          />
         ))}
       </Box>
     </Box>

@@ -41,12 +41,15 @@ function Home() {
           justifyContent: "space-around",
         }}
       >
-        {MENUS.map(({ title, description, backgroundImageSource, action }) => (
-          <CardActionItem
-            {...{ title, description, backgroundImageSource }}
-            action={action ? () => navigate("/home/profile") : () => {}}
-          />
-        ))}
+        {MENUS.map(
+          ({ title, description, backgroundImageSource, action }, index) => (
+            <CardActionItem
+              key={index}
+              {...{ title, description, backgroundImageSource }}
+              action={action ? () => navigate("/home/profile") : () => {}}
+            />
+          )
+        )}
       </Box>
     </Box>
   );

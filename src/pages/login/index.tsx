@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { Box, Divider, Link } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import WooCommerceAuth from "../../services/auth/auth";
+import ROUTE from "../../routes/route";
 
 interface Credential {
   email: string;
@@ -36,16 +38,31 @@ function Login() {
   const formik = useFormik({
     validationSchema,
     initialValues,
-    onSubmit: () => {
-      // todo: add logic here
-      setTimeout(() => {
-        alert(JSON.stringify(values || errors));
-        navigate("/home");
-      }, 2000);
+    onSubmit: async () => {
+      try {
+        await WooCommerceAuth(
+          {
+            username: values.email,
+            password: values.password,
+          },
+          () => navigate(ROUTE.HOME)
+        );
+        resetForm();
+      } catch (error) {
+        // todo: Handle errors appropriately (show error Message)
+        console.error("Error during authentication:", error);
+      }
     },
   });
 
-  const { errors, values, handleSubmit, isSubmitting, handleChange } = formik;
+  const {
+    errors,
+    values,
+    handleSubmit,
+    isSubmitting,
+    handleChange,
+    resetForm,
+  } = formik;
 
   return (
     <Container>

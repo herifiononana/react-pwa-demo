@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import VoiceMemo from "./voiceMemo";
 import Home from "./home";
 import { Box } from "@mui/material";
@@ -6,14 +6,23 @@ import SAV from "./sav";
 import Catalog from "./catalog";
 import Navbar from "../components/navigation/Navbar";
 import Profil from "./profil";
+import { useAuth } from "../provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import ROUTE from "../routes/route";
 
 // todo: all page not specified
 const HOME_PAGES = [<Home />, <VoiceMemo />, <Catalog />, <SAV />, <Profil />];
 
 function Main() {
+  const { isAuthenticated } = useAuth();
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const navigate = useNavigate();
 
   const switchToPage = (page: number) => setCurrentPage(page);
+
+  useEffect(() => {
+    if (!isAuthenticated) navigate(ROUTE.LOGIN);
+  }, [isAuthenticated, navigate]);
 
   return (
     <Box

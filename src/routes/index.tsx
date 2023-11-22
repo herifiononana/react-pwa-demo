@@ -6,6 +6,7 @@ import Main from "../pages";
 import Login from "../pages/login";
 import Profil from "../pages/profil";
 import ROUTE from "./route";
+import AuthGuard from "../guards/AuthGuard";
 
 export const router = createBrowserRouter([
   {
@@ -14,11 +15,11 @@ export const router = createBrowserRouter([
   },
   {
     path: ROUTE.HOME,
-    element: <Main />,
+    element: <AuthGuard children={<Main />} />,
   },
   {
     path: ROUTE.PROFIL,
-    element: <Profil />,
+    element: <AuthGuard children={<Profil />} />,
   },
 ]);
 

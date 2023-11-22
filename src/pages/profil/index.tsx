@@ -2,14 +2,16 @@ import React from "react";
 import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../provider/AuthProvider";
 
 // todo: improve page
 function Profil() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const logout = () => {
-    navigate("/");
-  };
+  // const handleLogout = () => {
+  //   logout()
+  // };
   return (
     <Box
       sx={{

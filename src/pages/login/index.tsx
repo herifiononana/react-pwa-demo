@@ -7,12 +7,13 @@ import {
   Title,
   ErrorMessage,
 } from "./styles";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Box, Divider, Link } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import WooCommerceAuth from "../../services/auth/auth";
+import WooCommerceAuth from "../../services/auth/wooCommerceAuth";
 import ROUTE from "../../routes/route";
+import { useAuth } from "../../provider/AuthProvider";
 
 interface Credential {
   email: string;
@@ -34,6 +35,7 @@ const initialValues: Credential = {
 
 function Login() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const formik = useFormik({
     validationSchema,
@@ -63,6 +65,8 @@ function Login() {
     handleChange,
     resetForm,
   } = formik;
+
+  if (isAuthenticated) return <Navigate to={ROUTE.HOME} />;
 
   return (
     <Container>

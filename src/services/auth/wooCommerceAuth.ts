@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import axios from "../../config/axiosConfig";
+import LocalStorage from "../localStorage/localStorage";
 
 interface AuthCredentials {
   username: string;
@@ -51,11 +52,8 @@ const WooCommerceAuth = async (
           const expiresIn: number = response.data.expires_in;
 
           // Store the new access token and its expiration time
-          localStorage.setItem("accessToken", newAccessToken);
-          localStorage.setItem(
-            "tokenExpiration",
-            (Date.now() + expiresIn * 1000).toString()
-          );
+          LocalStorage.setToken(newAccessToken);
+          LocalStorage.setExpirationToken(expiresIn);
 
           console.log("New Access Token:", newAccessToken);
           navigateCallback();
@@ -92,11 +90,8 @@ const WooCommerceAuth = async (
         const expiresIn: number = response.data.expires_in;
 
         // Store the new access token and its expiration time
-        localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem(
-          "tokenExpiration",
-          (Date.now() + expiresIn * 1000).toString()
-        );
+        LocalStorage.setToken(newAccessToken);
+        LocalStorage.setExpirationToken(expiresIn);
 
         console.log("New Access Token:", newAccessToken);
         navigateCallback();

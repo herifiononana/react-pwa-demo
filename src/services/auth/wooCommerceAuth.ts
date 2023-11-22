@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import axios from "../../config/axiosConfig";
 
 interface AuthCredentials {
   username: string;
@@ -12,9 +13,8 @@ const WooCommerceAuth = async (
   const consumerKey: string | undefined = process.env.REACT_APP_CONSUMER_KEY;
   const consumerSecret: string | undefined =
     process.env.REACT_APP_CONSUMER_SECRET;
-  const baseUrl: string =
-    process.env.REACT_APP_BASE_URL ||
-    "https://votre-site-wordpress/wp-json/wc/v3";
+
+  const url = "/oauth/token";
 
   if (!consumerKey || !consumerSecret) {
     console.error("API keys missing. Check your .env file.");
@@ -32,20 +32,19 @@ const WooCommerceAuth = async (
     if (Date.now() > expirationTime) {
       try {
         const requestData = {
-          method: "POST",
-          url: `${baseUrl}/oauth/token`,
           data: {
             grant_type: "password",
             username: credentials.username,
             password: credentials.password,
           },
+        };
+
+        const response: AxiosResponse = await axios.post(url, requestData, {
           auth: {
             username: consumerKey,
             password: consumerSecret,
           },
-        };
-
-        const response: AxiosResponse = await axios(requestData);
+        });
 
         if (response.status === 200) {
           const newAccessToken: string = response.data.access_token;
@@ -74,20 +73,19 @@ const WooCommerceAuth = async (
     // The token is not available, obtain a new token
     try {
       const requestData = {
-        method: "POST",
-        url: `${baseUrl}/oauth/token`,
         data: {
           grant_type: "password",
           username: credentials.username,
           password: credentials.password,
         },
+      };
+
+      const response: AxiosResponse = await axios.post(url, requestData, {
         auth: {
           username: consumerKey,
           password: consumerSecret,
         },
-      };
-
-      const response: AxiosResponse = await axios(requestData);
+      });
 
       if (response.status === 200) {
         const newAccessToken: string = response.data.access_token;

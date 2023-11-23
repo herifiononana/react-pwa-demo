@@ -146,5 +146,34 @@ const CartProduct = {
       throw new Error("Error deleting item from cart.");
     }
   },
+
+  clearCart: async (): Promise<void> => {
+    try {
+      const clearCartUrl = `${url}/clear`;
+      const accessToken = LocalStorage.getToken();
+
+      const response: AxiosResponse = await axios.post(
+        clearCartUrl,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        console.error(
+          "Unexpected response when deleting all items from the basket:",
+          response
+        );
+        throw new Error("Error deleting all items from cart.");
+      }
+    } catch (error) {
+      console.error("Error deleting all items from cart:", error);
+      throw new Error("Error deleting all items from cart.");
+    }
+  },
 };
 export default CartProduct;

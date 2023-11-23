@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import axios from "../../config/axiosConfig";
 import LocalStorage from "../localStorage/localStorage";
 
-interface AuthCredentials {
+export interface AuthCredentials {
   username: string;
   password: string;
 }

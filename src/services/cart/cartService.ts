@@ -11,6 +11,20 @@ interface CartItem {
   // ... other cart field
 }
 
+interface AddProductRequest {
+  product_id: number;
+  quantity: number;
+}
+
+interface UpdateItemRequest {
+  key: string; // Unique key to item in basket
+  quantity: number;
+}
+
+interface RemoveItemRequest {
+  key: string; // Unique key to item in basket
+}
+
 interface CartResponse {
   id: number;
   items: CartItem[];
@@ -46,16 +60,91 @@ const CartProduct = {
     }
   },
 
-  //   todo: create method addProduct, updateItem, removeItem, clearItem and other if necessary
+  addProduct: async (requestData: AddProductRequest): Promise<void> => {
+    const accessToken = LocalStorage.getToken();
+    try {
+      const addProductUrl = `${url}/add`;
+
+      const response: AxiosResponse = await axios.post(
+        addProductUrl,
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        console.error(
+          "Unexpected response when adding product to cart:",
+          response
+        );
+        throw new Error("Error adding product to cart.");
+      }
+    } catch (error) {
+      console.error("Error adding product to cart :", error);
+      throw new Error("Error adding product to cart.");
+    }
+  },
+
+  updateItem: async (requestData: UpdateItemRequest): Promise<void> => {
+    try {
+      const updateItemUrl = `${url}/update-item`;
+      const accessToken = LocalStorage.getToken();
+
+      const response: AxiosResponse = await axios.post(
+        updateItemUrl,
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        console.error(
+          "Unexpected response when updating item quantity:",
+          response
+        );
+        throw new Error("Error updating item quantity in basket.");
+      }
+    } catch (error) {
+      console.error("Error updating item quantity in basket:", error);
+      throw new Error("Error updating item quantity in basket.");
+    }
+  },
+
+  removeItem: async (requestData: RemoveItemRequest): Promise<void> => {
+    try {
+      const removeItemUrl = `${url}/remove-item`;
+      const accessToken = LocalStorage.getToken();
+
+      const response: AxiosResponse = await axios.post(
+        removeItemUrl,
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        console.error(
+          "Unexpected response when removing the item from the basket:",
+          response
+        );
+        throw new Error("Error deleting item from cart.");
+      }
+    } catch (error) {
+      console.error("Error deleting item from cart:", error);
+      throw new Error("Error deleting item from cart.");
+    }
+  },
 };
 export default CartProduct;
-// // Exemple of use
-// CartProduct.getCart()
-//   .then((cart: CartResponse) => {
-//     console.log("Basket successfully retrieved:", cart);
-//     // Do something with the basket data
-//   })
-//   .catch((error: Error) => {
-//     console.error("Error when retrieving the basket.", error.message);
-//     // Handle error appropriately
-//   });

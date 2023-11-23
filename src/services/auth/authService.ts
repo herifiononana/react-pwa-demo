@@ -1,3 +1,5 @@
+import WooCommerceAuth, { AuthCredentials } from "./wooCommerceAuth";
+
 class AuthService {
   static isAuthenticated() {
     // todo: add other logical authentication
@@ -8,6 +10,13 @@ class AuthService {
 
   static logout() {
     localStorage.removeItem("accessToken");
+  }
+
+  static async login(
+    credentials: AuthCredentials,
+    navigateCallback: () => void
+  ) {
+    await WooCommerceAuth(credentials, navigateCallback);
   }
 }
 

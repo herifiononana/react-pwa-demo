@@ -11,9 +11,9 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { Box, Divider, Link } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import WooCommerceAuth from "../../services/auth/wooCommerceAuth";
 import ROUTE from "../../routes/route";
 import { useAuth } from "../../provider/AuthProvider";
+import AuthService from "../../services/auth/authService";
 
 interface Credential {
   email: string;
@@ -42,7 +42,7 @@ function Login() {
     initialValues,
     onSubmit: async () => {
       try {
-        await WooCommerceAuth(
+        await AuthService.login(
           {
             username: values.email,
             password: values.password,

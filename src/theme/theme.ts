@@ -19,29 +19,17 @@ export const lightTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: ".8rem",
-          background: "linear-gradient(to bottom right, #e0e0e0, #ffffff)",
-          border: 0,
-          borderRadius: "25px",
           "& fieldset": {
-            border: "none",
+            borderColor: "black",
           },
+          color: "black",
+          backgroundColor: "white",
         },
       },
     },
     MuiSelect: {
       defaultProps: {
         size: "small",
-      },
-      styleOverrides: {
-        root: {
-          fontSize: ".8rem",
-          background: "linear-gradient(to bottom right, #e0e0e0, #ffffff)",
-          border: "none",
-          borderRadius: "25px",
-          "& fieldset": {
-            border: "none",
-          },
-        },
       },
     },
   },
@@ -61,26 +49,10 @@ export const darkTheme: Theme = createTheme({
       defaultProps: {
         size: "small",
       },
-      styleOverrides: {
-        root: {
-          fontSize: ".8rem",
-          background: "linear-gradient(to bottom right, #f0f0f0, #ffffff)",
-          border: 0,
-          borderRadius: "25px",
-        },
-      },
     },
     MuiSelect: {
       defaultProps: {
         size: "small",
-      },
-      styleOverrides: {
-        root: {
-          fontSize: ".8rem",
-          background: "linear-gradient(to bottom right, #f0f0f0, #ffffff)",
-          border: 0,
-          borderRadius: "25px",
-        },
       },
     },
   },

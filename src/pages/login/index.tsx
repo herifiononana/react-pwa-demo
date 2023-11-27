@@ -2,13 +2,21 @@ import React from "react";
 import {
   Container,
   HeadContainer,
-  SubmitButton,
-  TextInput,
   Title,
   ErrorMessage,
+  Text,
+  Link,
 } from "./styles";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Box, Divider, Link } from "@mui/material";
+import {
+  Box,
+  Container as MUIContainer,
+  Divider,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Button,
+} from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import ROUTE from "../../routes/route";
@@ -70,46 +78,87 @@ function Login() {
 
   return (
     <Container>
+      {/* todo: add Logo and remove Title */}
       <HeadContainer>
         <Divider sx={{ width: "100%" }} />
         <Title>Connexion</Title>
         <Divider sx={{ width: "100%" }} />
       </HeadContainer>
 
-      <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "white",
+          padding: 1,
+          paddingTop: 5,
+          paddingBottom: 5,
+          border: 1,
+        }}
+      >
         <form action="#" onSubmit={handleSubmit}>
-          <TextInput
-            placeholder="Adresse e-mail"
-            name="email"
-            fullWidth
-            value={values.email}
-            onChange={handleChange}
-          />
-          {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-          <TextInput
-            placeholder="Mot de passe"
-            name="password"
-            type="password"
-            fullWidth
-            value={values.password}
-            onChange={handleChange}
-          />
-          {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
-          <SubmitButton
-            variant="contained"
-            type="submit"
-            onSubmit={() => handleSubmit()}
-            onClick={() => handleSubmit()}
-            fullWidth
-            disabled={isSubmitting}
+          <MUIContainer sx={{ marginBottom: 2 }}>
+            <Text>Username or Email Address</Text>
+            <TextField
+              variant="outlined"
+              name="email"
+              fullWidth
+              value={values.email}
+              onChange={handleChange}
+            />
+            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+          </MUIContainer>
+          <MUIContainer sx={{ marginBottom: 2 }}>
+            <Text>Password</Text>
+            <TextField
+              variant="outlined"
+              name="password"
+              type="password"
+              fullWidth
+              value={values.password}
+              onChange={handleChange}
+            />
+            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+          </MUIContainer>
+          <MUIContainer
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
           >
-            {isSubmitting ? "Veuillez patienter" : "Se connecter"}
-          </SubmitButton>
+            <FormControlLabel
+              sx={{ color: "#444444" }}
+              control={<Checkbox />}
+              label="Remember me"
+            />
+            <Button
+              variant="contained"
+              type="submit"
+              onSubmit={() => handleSubmit()}
+              onClick={() => handleSubmit()}
+              disabled={isSubmitting}
+            >
+              Log In
+            </Button>
+          </MUIContainer>
         </form>
       </Box>
-      <Link sx={{ fontSize: ".8rem", textDecoration: "none" }}>
-        Mot de passe oublier ?
-      </Link>
+      <Box
+        sx={{
+          width: "100%",
+          padding: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Link
+          sx={{
+            marginBottom: 1,
+          }}
+        >
+          Lost your password?
+        </Link>
+        <Link>Go to Demo store</Link>
+      </Box>
     </Container>
   );
 }

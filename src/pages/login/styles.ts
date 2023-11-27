@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
-import { Box, Typography, TextField, Button } from "@mui/material";
+import { Box, Typography, Link as MUILink } from "@mui/material";
 
 const Container = styled(Box)({
   height: "100vh",
+  backgroundColor: "#eeeeee",
   paddingInline: 30,
   display: "flex",
   flexDirection: "column",
@@ -23,31 +24,21 @@ const Title = styled(Typography)({
   padding: 10,
 });
 
-const TextInput = styled(TextField)({
-  "& fieldset": {
-    border: "none",
-  },
-  backgroundColor: "white",
-  marginTop: 20,
-});
-
 const ErrorMessage = styled(Typography)({
   fontSize: ".7rem",
   color: "red",
   paddingInlineStart: 10,
 });
 
-const SubmitButton = styled(Button)({
-  borderRadius: "25px",
-  marginTop: 10,
-  marginBottom: 10,
+const Text = styled(Typography)({
+  fontSize: ".9rem",
+  color: "#444444",
 });
 
-export {
-  Container,
-  HeadContainer,
-  Title,
-  TextInput,
-  ErrorMessage,
-  SubmitButton,
-};
+const Link = styled(MUILink)({
+  fontSize: ".8rem",
+  color: "#444444",
+  textDecoration: "none",
+});
+
+export { Container, HeadContainer, Title, ErrorMessage, Text, Link };

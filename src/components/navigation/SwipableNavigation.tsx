@@ -44,7 +44,7 @@ const MENU: MenuItem[] = [
   },
   {
     label: "Customers",
-    link: "/",
+    link: ROUTE.CLIENTS,
     icon: <GroupsIcon sx={{ color: "white" }} />,
   },
 ];

@@ -1,25 +1,34 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 interface CategoryButtonProps {
   name: string;
-  action: () => void;
+  action?: () => void;
+  icon: React.ReactNode;
 }
 
-function CategoryButton({ name, action }: CategoryButtonProps) {
+function CategoryButton({
+  name,
+  action = () => {},
+  icon,
+}: CategoryButtonProps) {
   return (
-    <Button
-      size="small"
+    <Box
       sx={{
-        minWidth: "100px",
-        fontSize: ".7rem",
-        color: "black",
-        fontWeight: 1,
+        display: "flex",
+        alignItems: "center",
+        borderRadius: "25px",
+        backgroundColor: "white",
+        paddingInline: 1,
+        color: "text.primary",
+        marginRight: 1,
+        whiteSpace: "nowrap",
       }}
       onClick={action}
     >
-      {name.toLocaleUpperCase()}
-    </Button>
+      {icon}
+      <Typography sx={{ fontSize: ".8rem" }}>{name}</Typography>
+    </Box>
   );
 }
 

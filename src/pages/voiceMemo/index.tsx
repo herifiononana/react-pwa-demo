@@ -37,8 +37,8 @@ function VoiceMemo() {
               flexWrap: "nowrap",
             }}
           >
-            <CategoryButton name="nouveautes" action={() => {}} />
-            <CategoryButton name="catalogues" action={() => {}} />
+            {/* <CategoryButton name="nouveautes" action={() => {}} />
+            <CategoryButton name="catalogues" action={() => {}} /> */}
           </Box>
           <AddButton action={() => {}} />
         </Box>

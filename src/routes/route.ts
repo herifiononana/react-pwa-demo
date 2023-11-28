@@ -1,7 +1,8 @@
 const ROUTE = {
   LOGIN: "/",
   HOME: "/home",
-  PROFIL: "/home/profile",
+  PROFIL: "/profile",
+  PRODUCTS: "/products",
 };
 
 export default ROUTE;

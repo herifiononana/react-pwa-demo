@@ -4,6 +4,17 @@ import { createTheme, Theme } from "@mui/material/styles";
 export const lightTheme: Theme = createTheme({
   palette: {
     mode: "light",
+    primary: {
+      main: "#243b53", // Couleur principale (par défaut pour les boutons, la barre de navigation, etc.)
+      dark: "#243b53",
+    },
+    secondary: {
+      main: "#FFFFFF", // Couleur secondaire (par défaut pour certains éléments d'accent)
+    },
+    text: {
+      primary: "#000", // Couleur du texte principal
+      secondary: "#888", // Couleur du texte secondaire
+    },
   },
   components: {
     MuiButton: {

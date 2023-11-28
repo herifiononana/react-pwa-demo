@@ -4,9 +4,10 @@ import {
 } from "react-router-dom";
 import Main from "../pages";
 import Login from "../pages/login";
-import Profil from "../pages/profil";
 import ROUTE from "./route";
 import AuthGuard from "../guards/AuthGuard";
+import Home from "../pages/home";
+import Products from "../pages/products";
 
 export const router = createBrowserRouter([
   {
@@ -14,12 +15,17 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: ROUTE.HOME,
     element: <AuthGuard children={<Main />} />,
-  },
-  {
-    path: ROUTE.PROFIL,
-    element: <AuthGuard children={<Profil />} />,
+    children: [
+      {
+        path: ROUTE.HOME,
+        element: <AuthGuard children={<Home />} />,
+      },
+      {
+        path: ROUTE.PRODUCTS,
+        element: <AuthGuard children={<Products />} />,
+      },
+    ],
   },
 ]);
 

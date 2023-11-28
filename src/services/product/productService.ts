@@ -1,13 +1,18 @@
 import { AxiosResponse } from "axios";
 import axios from "../../config/axiosConfig";
 
-interface Product {
-  id: number;
-  name: string;
-  // todo: add other properties if necessary
+export interface Product {
+  product_id: string;
+  product_name?: string;
+  product_type?: string;
+  product_category?: string;
+  product_ugs?: string;
+  product_price?: string;
+  product_stock?: number;
+  product_image?: string;
 }
 
-const URL = "/products";
+const URL = "/products/v0/all";
 
 const ProductService = {
   getProducts: async ({

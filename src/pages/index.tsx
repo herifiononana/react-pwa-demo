@@ -24,11 +24,13 @@ function Main() {
         overflowX: "hidden",
       }}
     >
-      <SwipableNavigation />
+      <Box sx={{ zIndex: 1 }}>
+        <SwipableNavigation />
+      </Box>
+
       <Container
         sx={{
           height: "100vh",
-          zIndex: -1,
           marginTop: theme.spacing(6),
         }}
       >

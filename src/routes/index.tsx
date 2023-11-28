@@ -8,6 +8,7 @@ import ROUTE from "./route";
 import AuthGuard from "../guards/AuthGuard";
 import Home from "../pages/home";
 import Products from "../pages/products";
+import Clients from "../pages/clients";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTE.PRODUCTS,
         element: <AuthGuard children={<Products />} />,
+      },
+      {
+        path: ROUTE.CLIENTS,
+        element: <AuthGuard children={<Clients />} />,
       },
     ],
   },

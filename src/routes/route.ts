@@ -3,6 +3,7 @@ const ROUTE = {
   HOME: "/home",
   PROFIL: "/profile",
   PRODUCTS: "/products",
+  CLIENTS: "/clients",
 };
 
 export default ROUTE;

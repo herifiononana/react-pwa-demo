@@ -25,7 +25,13 @@ function Main() {
       }}
     >
       <SwipableNavigation />
-      <Container sx={{ marginTop: theme.spacing(4) }}>
+      <Container
+        sx={{
+          height: "100vh",
+          zIndex: -1,
+          marginTop: theme.spacing(6),
+        }}
+      >
         <Outlet />
       </Container>
     </Box>

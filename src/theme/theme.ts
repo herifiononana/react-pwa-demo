@@ -5,15 +5,19 @@ export const lightTheme: Theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#243b53", // Couleur principale (par défaut pour les boutons, la barre de navigation, etc.)
+      main: "#243b53", // Main color (default for buttons, navigation bar, etc.)
       dark: "#243b53",
+      light: "#e2e8f0",
     },
     secondary: {
-      main: "#FFFFFF", // Couleur secondaire (par défaut pour certains éléments d'accent)
+      main: "#FFFFFF", // Secondary color (default for some accent elements)
+    },
+    background: {
+      default: "#FFFFFF",
     },
     text: {
-      primary: "#000", // Couleur du texte principal
-      secondary: "#888", // Couleur du texte secondaire
+      primary: "#486581",
+      secondary: "#888",
     },
   },
   components: {

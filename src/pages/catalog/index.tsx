@@ -73,11 +73,11 @@ function Catalog() {
           marginBottom: 1,
         }}
       >
-        <CategoryButton name={"IT BAG"} action={() => {}} />
+        {/* <CategoryButton name={"IT BAG"} action={() => {}} />
         <CategoryButton name={"XXXX"} action={() => {}} />
         <CategoryButton name={"XX"} action={() => {}} />
         <CategoryButton name={"XXXX"} action={() => {}} />
-        <CategoryButton name={"XXX"} action={() => {}} />
+        <CategoryButton name={"XXX"} action={() => {}} /> */}
       </Box>
       <Grid
         container

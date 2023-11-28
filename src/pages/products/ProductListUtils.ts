@@ -1,5 +1,6 @@
-import { GridColDef, GridColumnHeaderParams } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import ProductService, { Product } from "../../services/product/productService";
+import { createColumn } from "../../utils/utils";
 
 export interface ProductFormated {
   id: string;
@@ -9,15 +10,8 @@ export interface ProductFormated {
   price: string;
 }
 
-const createColumn = (field: keyof Product): GridColDef => ({
-  field,
-  headerName: field.toString(),
-  width: 150,
-  renderHeader: (params: GridColumnHeaderParams) => params.field.toUpperCase(),
-});
-
 export const columns: GridColDef[] = ["title", "category", "tags", "price"].map(
-  (field) => createColumn(field as keyof Product)
+  (field) => createColumn(field)
 );
 
 export const getData = async () => {

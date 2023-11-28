@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, IconButton, TextField } from "@mui/material";
+import { Box, Container, IconButton, TextField, Tooltip } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   CustomerFormated,
@@ -46,11 +47,14 @@ function Clients() {
             },
           }}
         />
+
+        <Tooltip title="Add new customer">
+          <IconButton>
+            <PersonAddAlt1Icon sx={{ color: "primary.main" }} />
+          </IconButton>
+        </Tooltip>
         <IconButton>
-          <TuneIcon />
-        </IconButton>
-        <IconButton>
-          <TuneIcon />
+          <TuneIcon sx={{ color: "primary.main" }} />
         </IconButton>
       </Box>
       <DataGrid

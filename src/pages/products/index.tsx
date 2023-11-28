@@ -70,7 +70,7 @@ function Products() {
           }}
         />
         <IconButton>
-          <TuneIcon />
+          <TuneIcon sx={{ color: "primary.main" }} />
         </IconButton>
       </Box>
       <Box

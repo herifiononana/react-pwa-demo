@@ -3,7 +3,6 @@ import { Box, Typography, Link as MUILink } from "@mui/material";
 
 const Container = styled(Box)({
   height: "100vh",
-  backgroundColor: "#eeeeee",
   paddingInline: 30,
   display: "flex",
   flexDirection: "column",

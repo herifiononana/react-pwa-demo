@@ -1,54 +1,48 @@
-import React from "react";
-import {
-  Box,
-  Container,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Container, IconButton, TextField } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import StarIcon from "@mui/icons-material/Star";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import { DataGrid } from "@mui/x-data-grid";
 import {
-  DataGrid,
-  GridColDef,
-  GridColumnHeaderParams,
-  GridRowsProp,
-} from "@mui/x-data-grid";
+  ProductFormated,
+  columns,
+  formatProducts,
+  getData,
+} from "./ProductListUtils";
+import CategoryButton from "../../components/buttons/categoryButton";
+
+const CATEGORY_FILTER = [
+  {
+    name: "Featured",
+    icon: <StarIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
+  },
+  {
+    name: "On Sale",
+    icon: <MonetizationOnIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
+  },
+  {
+    name: "Select Category",
+    icon: <FolderOpenIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
+  },
+  {
+    name: "Select tag",
+    icon: <LocalOfferIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
+  },
+];
 
 function Products() {
-  const rows: GridRowsProp = [];
+  const [products, setProducts] = useState<ProductFormated[]>([]);
 
-  const columns: GridColDef[] = [
-    {
-      field: "title",
-      headerName: "title",
-      width: 150,
-      renderHeader: (params: GridColumnHeaderParams) =>
-        params.field.toUpperCase(),
-    },
-    {
-      field: "category",
-      headerName: "category",
-      width: 150,
-      renderHeader: (params: GridColumnHeaderParams) =>
-        params.field.toUpperCase(),
-    },
-    {
-      field: "tags",
-      headerName: "tags",
-      width: 150,
-      renderHeader: (params: GridColumnHeaderParams) =>
-        params.field.toUpperCase(),
-    },
-    {
-      field: "price",
-      headerName: "price",
-      width: 150,
-      renderHeader: (params: GridColumnHeaderParams) =>
-        params.field.toUpperCase(),
-    },
-  ];
-
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const data = await getData();
+      setProducts(formatProducts(data));
+    };
+    fetchProduct();
+  }, []);
   return (
     <Container
       sx={{
@@ -67,7 +61,14 @@ function Products() {
           alignItems: "center",
         }}
       >
-        <TextField placeholder="Search Products" />
+        <TextField
+          placeholder="Search Products"
+          sx={{
+            "& fieldset": {
+              borderColor: "#888",
+            },
+          }}
+        />
         <IconButton>
           <TuneIcon />
         </IconButton>
@@ -80,26 +81,19 @@ function Products() {
           padding: 2,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            borderRadius: "25px",
-            backgroundColor: "white",
-            paddingInline: 1,
-            color: "text.primary",
-            marginRight: 1,
-          }}
-        >
-          <StarIcon sx={{ fontSize: "1.2rem", marginRight: 0.4 }} />
-          <Typography>Featured</Typography>
-        </Box>
+        {CATEGORY_FILTER.map(({ name, icon }, index) => (
+          <CategoryButton key={index} {...{ name, icon }} />
+        ))}
       </Box>
 
       <DataGrid
-        sx={{ backgroundColor: "#fff", height: "80%" }}
+        sx={{ backgroundColor: "#fff", height: "85%" }}
         columns={columns}
-        rows={rows}
+        rows={products}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 10 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
       />
     </Container>
   );

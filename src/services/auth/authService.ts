@@ -1,22 +1,28 @@
+import LocalStorage from "../localStorage/localStorage";
 import WooCommerceAuth, { AuthCredentials } from "./wooCommerceAuth";
 
 class AuthService {
   static isAuthenticated() {
     // todo: add other logical authentication
 
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken =
+      !!LocalStorage.getConsumerKey() && !!LocalStorage.getConsumerSecret();
     return !!accessToken;
   }
 
   static logout() {
-    localStorage.removeItem("accessToken");
+    LocalStorage.removeToken();
   }
 
   static async login(
     credentials: AuthCredentials,
     navigateCallback: () => void
   ) {
-    await WooCommerceAuth(credentials, navigateCallback);
+    try {
+      await WooCommerceAuth(credentials, navigateCallback);
+    } catch (error) {
+      console.log("error :>> ", error);
+    }
   }
 }
 

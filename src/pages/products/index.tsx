@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, IconButton, TextField } from "@mui/material";
-import TuneIcon from "@mui/icons-material/Tune";
+import { Box, Container } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { DataGrid } from "@mui/x-data-grid";
 import {
-  ProductFormated,
-  columns,
-  formatProducts,
-  getData,
-} from "./ProductListUtils";
-import CategoryButton from "../../components/buttons/categoryButton";
+  DataGrid,
+  GridColDef,
+  GridTreeNodeWithRender,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
+import { ProductFormated, formatProducts, getData } from "./ProductListUtils";
+import {
+  ActionCell,
+  ProductCategoryeCell,
+  ProductImageCell,
+  ProductTitleCell,
+} from "../../components/datagridCell";
+import { defineGridColDef } from "../../utils/utils";
+import SearchAndFilter from "../../components/input/searchAndFilter";
+import FilterByCategory, {
+  Category,
+} from "../../components/input/filterByCategory";
+import CircularProgress from "../../components/progress";
 
-const CATEGORY_FILTER = [
+const CATEGORY_FILTER: Category[] = [
   {
     name: "Featured",
     icon: <StarIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
@@ -33,13 +43,52 @@ const CATEGORY_FILTER = [
   },
 ];
 
+const columnConfig = [
+  {
+    field: "image",
+    header: "Image",
+    width: 150,
+    render: (
+      params: GridValueGetterParams<any, any, GridTreeNodeWithRender>
+    ) => <ProductImageCell image={params.row.image} />,
+  },
+  {
+    field: "title",
+    header: "Title",
+    width: 150,
+    render: ({
+      row: { title },
+    }: GridValueGetterParams<any, any, GridTreeNodeWithRender>) => (
+      <ProductTitleCell title={title} />
+    ),
+  },
+  {
+    field: "category",
+    header: "Category",
+    width: 150,
+    render: ({
+      row: { category },
+    }: GridValueGetterParams<any, any, GridTreeNodeWithRender>) => (
+      <ProductCategoryeCell category={category} />
+    ),
+  },
+  { field: "tags", header: "Tags", width: 150 },
+  { field: "price", header: "Price", width: 150 },
+  { field: "action", header: "", flex: 1, render: () => <ActionCell /> },
+];
+
 function Products() {
   const [products, setProducts] = useState<ProductFormated[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const columns = defineGridColDef(columnConfig);
 
   useEffect(() => {
+    setLoading(true);
     const fetchProduct = async () => {
       const data = await getData();
       setProducts(formatProducts(data));
+      setLoading(false);
     };
     fetchProduct();
   }, []);
@@ -54,47 +103,31 @@ function Products() {
         height: "90%",
       }}
     >
+      <SearchAndFilter />
+      <FilterByCategory categories={CATEGORY_FILTER} />
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          width: "100%",
+          height: "85%",
+          borderRadius: "5px",
+          backgroundColor: "white",
         }}
       >
-        <TextField
-          placeholder="Search Products"
-          sx={{
-            "& fieldset": {
-              borderColor: "#888",
-            },
-          }}
-        />
-        <IconButton>
-          <TuneIcon sx={{ color: "primary.main" }} />
-        </IconButton>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <DataGrid
+            sx={{ backgroundColor: "#fff", height: "100%" }}
+            columns={columns as GridColDef[]}
+            rows={products}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 10 } },
+            }}
+            pageSizeOptions={[5, 10, 25]}
+            rowHeight={100}
+          />
+        )}{" "}
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "nowrap",
-          overflow: "auto",
-          padding: 2,
-        }}
-      >
-        {CATEGORY_FILTER.map(({ name, icon }, index) => (
-          <CategoryButton key={index} {...{ name, icon }} />
-        ))}
-      </Box>
-
-      <DataGrid
-        sx={{ backgroundColor: "#fff", height: "85%" }}
-        columns={columns}
-        rows={products}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10 } },
-        }}
-        pageSizeOptions={[5, 10, 25]}
-      />
     </Container>
   );
 }

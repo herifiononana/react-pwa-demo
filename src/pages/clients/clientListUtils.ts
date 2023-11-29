@@ -30,6 +30,7 @@ export const columns: GridColDef[] = [
 export const formatCustomers = (customers: Customer[]): CustomerFormated[] => {
   return customers.map((customer) => ({
     id: customer?.id.toString(),
+    image: customer?.avatar_url || "",
     firstname: customer?.first_name || "",
     lastname: customer?.last_name || "",
     email: customer?.email || "",

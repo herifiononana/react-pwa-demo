@@ -7,7 +7,7 @@ import { useAuth } from "../../provider/AuthProvider";
 // todo: improve page
 function Profil() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logedOut } = useAuth();
 
   // const handleLogout = () => {
   //   logout()
@@ -51,7 +51,7 @@ function Profil() {
         <Typography sx={{ fontSize: ".9rem" }}>JohnCruif@gmail.com</Typography>
         <Button
           variant="contained"
-          onClick={logout}
+          onClick={logedOut}
           sx={{ borderRadius: 25, marginTop: 2 }}
         >
           Se deconnecter

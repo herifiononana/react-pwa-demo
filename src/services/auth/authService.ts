@@ -4,7 +4,6 @@ import WooCommerceAuth, { AuthCredentials } from "./wooCommerceAuth";
 class AuthService {
   static isAuthenticated() {
     // todo: add other logical authentication
-
     const accessToken =
       !!LocalStorage.getConsumerKey() && !!LocalStorage.getConsumerSecret();
     return !!accessToken;
@@ -14,12 +13,9 @@ class AuthService {
     LocalStorage.removeToken();
   }
 
-  static async login(
-    credentials: AuthCredentials,
-    navigateCallback: () => void
-  ) {
+  static async login(credentials: AuthCredentials) {
     try {
-      await WooCommerceAuth(credentials, navigateCallback);
+      return await WooCommerceAuth(credentials);
     } catch (error) {
       console.log("error :>> ", error);
     }

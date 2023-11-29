@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   HeadContainer,
@@ -7,7 +7,7 @@ import {
   Text,
   Link,
 } from "./styles";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import {
   Box,
   Container as MUIContainer,
@@ -21,11 +21,9 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import ROUTE from "../../routes/route";
 import { useAuth } from "../../provider/AuthProvider";
-import AuthService from "../../services/auth/authService";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../store/store";
-// import { loginUser } from "../../features/authSlice/authAction";
-import { AuthCredentials } from "../../services/auth/wooCommerceAuth";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../store/store";
+import { loginUser } from "../../features/authSlice/authAction";
 
 interface Credential {
   email: string;
@@ -46,22 +44,26 @@ const initialValues: Credential = {
 };
 
 function Login() {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  // const dispatch = useDispatch();
-  // const { error, status, user } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, logedIn } = useAuth();
+  const dispatch = useAppDispatch();
+  const { error, status, user } = useSelector((state: RootState) => state.auth);
 
+  useEffect(() => {
+    user && logedIn();
+  }, [logedIn, user]);
   const formik = useFormik({
     validationSchema,
     initialValues,
     onSubmit: async () => {
-      const credential: AuthCredentials = {
-        username: values.email,
-        password: values.password,
-      };
       try {
-        await AuthService.login(credential, () => navigate(ROUTE.HOME));
-        // resetForm();
+        dispatch(
+          loginUser({
+            username: values.email,
+            password: values.password,
+          })
+        );
+
+        resetForm();
       } catch (error) {
         // todo: Handle errors appropriately (show error Message)
         console.error("Error during authentication:", error);
@@ -75,10 +77,10 @@ function Login() {
     handleSubmit,
     isSubmitting,
     handleChange,
-    // resetForm,
+    resetForm,
   } = formik;
 
-  if (isAuthenticated) return <Navigate to={ROUTE.HOME} />;
+  if (isAuthenticated) return <Navigate to={ROUTE.PRODUCTS} />;
 
   return (
     <Container>
@@ -101,7 +103,7 @@ function Login() {
       >
         <form action="#" onSubmit={handleSubmit}>
           <MUIContainer sx={{ marginBottom: 2 }}>
-            <Text>Username or Email Address</Text>
+            <Text>Username or Email Address </Text>
             <TextField
               variant="outlined"
               name="email"
@@ -109,7 +111,6 @@ function Login() {
               value={values.email}
               onChange={handleChange}
             />
-            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
           </MUIContainer>
           <MUIContainer sx={{ marginBottom: 2 }}>
             <Text>Password</Text>
@@ -121,8 +122,10 @@ function Login() {
               value={values.password}
               onChange={handleChange}
             />
-            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
           </MUIContainer>
+          {error && (
+            <ErrorMessage sx={{ textAlign: "center" }}>{error}</ErrorMessage>
+          )}
           <MUIContainer
             sx={{
               display: "flex",
@@ -139,7 +142,14 @@ function Login() {
               type="submit"
               onSubmit={() => handleSubmit()}
               onClick={() => handleSubmit()}
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting ||
+                !!errors.email ||
+                !!errors.password ||
+                status === "loading" ||
+                !values.email ||
+                !values.password
+              }
             >
               Log In
             </Button>

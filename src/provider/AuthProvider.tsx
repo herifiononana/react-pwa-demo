@@ -3,14 +3,14 @@ import AuthService from "../services/auth/authService";
 
 interface IAuthContext {
   isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
+  logedIn: () => void;
+  logedOut: () => void;
 }
 
 const AuthContext = createContext<IAuthContext>({
   isAuthenticated: false,
-  login: () => {},
-  logout: () => {},
+  logedIn: () => {},
+  logedOut: () => {},
 });
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -18,14 +18,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     AuthService.isAuthenticated
   );
 
-  const login = () => setIsAuthenticated(true);
-  const logout = () => {
+  const logedIn = () => setIsAuthenticated(true);
+  const logedOut = () => {
     AuthService.logout();
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, logedIn, logedOut }}>
       {children}
     </AuthContext.Provider>
   );

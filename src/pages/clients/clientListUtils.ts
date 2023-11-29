@@ -1,5 +1,3 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { createColumn } from "../../utils/utils";
 import CustomerService, {
   Customer,
 } from "../../services/customer/customerService";
@@ -18,14 +16,6 @@ export const fetchCustomers = async () => {
 
   return customers;
 };
-
-export const columns: GridColDef[] = [
-  "firstname",
-  "lastname",
-  "email",
-  "billing adress",
-  "date created",
-].map((field) => createColumn(field));
 
 export const formatCustomers = (customers: Customer[]): CustomerFormated[] => {
   return customers.map((customer) => ({

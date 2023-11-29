@@ -22,6 +22,10 @@ import { useFormik } from "formik";
 import ROUTE from "../../routes/route";
 import { useAuth } from "../../provider/AuthProvider";
 import AuthService from "../../services/auth/authService";
+// import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "../../store/store";
+// import { loginUser } from "../../features/authSlice/authAction";
+import { AuthCredentials } from "../../services/auth/wooCommerceAuth";
 
 interface Credential {
   email: string;
@@ -31,7 +35,7 @@ interface Credential {
 const validationSchema = yup.object({
   email: yup
     .string()
-    .email("Doit être un email valide")
+    // .email("Doit être un email valide")
     .required("Email obligatoire"),
   password: yup.string().trim().required("Mot de passe obligatoire"),
 });
@@ -44,20 +48,20 @@ const initialValues: Credential = {
 function Login() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  // const dispatch = useDispatch();
+  // const { error, status, user } = useSelector((state: RootState) => state.auth);
 
   const formik = useFormik({
     validationSchema,
     initialValues,
     onSubmit: async () => {
+      const credential: AuthCredentials = {
+        username: values.email,
+        password: values.password,
+      };
       try {
-        await AuthService.login(
-          {
-            username: values.email,
-            password: values.password,
-          },
-          () => navigate(ROUTE.HOME)
-        );
-        resetForm();
+        await AuthService.login(credential, () => navigate(ROUTE.HOME));
+        // resetForm();
       } catch (error) {
         // todo: Handle errors appropriately (show error Message)
         console.error("Error during authentication:", error);
@@ -71,7 +75,7 @@ function Login() {
     handleSubmit,
     isSubmitting,
     handleChange,
-    resetForm,
+    // resetForm,
   } = formik;
 
   if (isAuthenticated) return <Navigate to={ROUTE.HOME} />;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Avatar,
   Box,
   Container,
   Divider,
@@ -10,6 +11,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Inventory2Icon from "@mui/icons-material/Inventory2"; //product
@@ -18,12 +20,15 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import ROUTE from "../../routes/route";
+import UserOption from "../userOption";
 
 interface MenuItem {
   label: string;
   link: string;
   icon: React.ReactNode;
 }
+
+type page = "Products" | "POS" | "Orders" | "Customers";
 
 // todo: specify route
 const MENU: MenuItem[] = [
@@ -52,6 +57,7 @@ const MENU: MenuItem[] = [
 function SwipableNavigation() {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<page>("Products");
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -78,7 +84,14 @@ function SwipableNavigation() {
     >
       <List sx={{ color: "white" }}>
         {MENU.map(({ label, link, icon }, index) => (
-          <ListItem key={label} disablePadding onClick={() => navigate(link)}>
+          <ListItem
+            key={label}
+            disablePadding
+            onClick={() => {
+              setCurrentPage(label as page);
+              navigate(link);
+            }}
+          >
             <ListItemButton>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={label} />
@@ -90,20 +103,42 @@ function SwipableNavigation() {
     </Box>
   );
   return (
-    <Box
+    <Container
       sx={{ width: "100%", backgroundColor: "primary.main", position: "fixed" }}
     >
-      <Container>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <IconButton onClick={toggleDrawer(true)}>
           <MenuIcon color="secondary" />
         </IconButton>
-      </Container>
+        <Typography sx={{ whiteSpace: "nowrap", color: "#fff" }}>
+          {currentPage}
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Avatar
+            alt="Remy Sharp"
+            src="/static/images/avatar/1.jpg"
+            sx={{ width: 24, height: 24 }}
+          />
+          <UserOption />
+        </Box>
+      </Box>
       <Container>
         <Drawer anchor={"left"} open={open} onClose={toggleDrawer(false)}>
           {list()}
         </Drawer>
       </Container>
-    </Box>
+    </Container>
   );
 }
 

@@ -84,14 +84,26 @@ function Products() {
   const columns = defineGridColDef(columnConfig);
 
   useEffect(() => {
+    let isMounted = true;
+
     setLoading(true);
     const fetchProduct = async () => {
-      const data = await getData();
-      setProducts(formatProducts(data));
-      setLoading(false);
+      try {
+        const data = await getData();
+        if (isMounted) setProducts(formatProducts(data));
+      } catch (error) {
+        console.log("Error fetching data: ", error);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
     };
     fetchProduct();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
   return (
     <Container
       sx={{

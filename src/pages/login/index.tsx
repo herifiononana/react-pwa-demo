@@ -51,6 +51,7 @@ function Login() {
   useEffect(() => {
     user && logedIn();
   }, [logedIn, user]);
+
   const formik = useFormik({
     validationSchema,
     initialValues,

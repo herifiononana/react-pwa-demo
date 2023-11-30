@@ -58,15 +58,34 @@ function Clients() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const columns = defineGridColDef(columnConfig);
+
   useEffect(() => {
-    setLoading(true);
-    const fetch = async () => {
-      const data = await fetchCustomers();
-      setClients(formatCustomers(data));
-      setLoading(false);
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchCustomers();
+        if (isMounted) {
+          setClients(formatCustomers(data));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
     };
-    fetch();
+
+    fetchData();
+
+    return () => {
+      // Cleanup function to run when the component is unmounted
+      isMounted = false;
+    };
   }, []);
+
   return (
     <Container
       sx={{

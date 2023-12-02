@@ -34,14 +34,14 @@ type page = "Products" | "POS" | "Orders" | "Customers";
 const MENU: MenuItem[] = [
   {
     label: "POS",
-    link: ROUTE.HOME,
+    link: ROUTE.PRODUCTS,
     icon: <HomeIcon sx={{ color: "white" }} />,
   },
-  {
-    label: "Products",
-    link: ROUTE.PRODUCTS,
-    icon: <Inventory2Icon sx={{ color: "white" }} />,
-  },
+  // {
+  //   label: "Products",
+  //   link: ROUTE.PRODUCTS,
+  //   icon: <Inventory2Icon sx={{ color: "white" }} />,
+  // },
   {
     label: "Orders",
     link: "/",

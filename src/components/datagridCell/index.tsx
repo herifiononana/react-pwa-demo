@@ -5,31 +5,25 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SyncIcon from "@mui/icons-material/Sync";
 import styled from "@emotion/styled";
-import { shortenText } from "../../utils/utils";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export function ProductImageCell({ image }: { image: string }) {
   return (
-    <Box>
-      <img src={image} alt={image} width={95} height={95} loading="lazy" />
-    </Box>
-  );
-}
-
-export function ProductTitleCell({ title }: { title: string }) {
-  return (
-    <Box
-      sx={{
-        border: 1,
-        borderWidth: 1,
-        padding: 1,
-        borderColor: "#ddd",
-        backgroundColor: "#fff",
-        borderRadius: "5px",
-      }}
-    >
-      <Typography sx={{ fontSize: ".9rem", fontWeight: "bold" }}>
-        {shortenText(title, 10)}
-      </Typography>
+    <Box sx={{ width: "100%", height: "50%", overflow: "hidden" }}>
+      <img
+        src={image}
+        alt={image}
+        width={"100%"}
+        height={"100%"}
+        loading="lazy"
+        style={{
+          objectFit: "cover",
+          maxWidth: "80px",
+          maxHeight: "80px",
+          minWidth: "40px",
+          minHeight: "40px",
+        }}
+      />
     </Box>
   );
 }
@@ -40,16 +34,75 @@ export function ProductCategoryeCell({ category }: { category: string }) {
       sx={{
         border: 1,
         borderWidth: 1,
-        padding: 1,
+        padding: 0.3,
         borderColor: "#ddd",
-        backgroundColor: "primary.main",
+        backgroundColor: "#627d98",
         borderRadius: "25px",
       }}
     >
-      <Typography sx={{ fontSize: ".9rem", color: "#fff" }}>
-        {shortenText(category, 10)}
+      <Typography
+        sx={{
+          fontSize: ".8rem",
+          color: "#fff",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {category}
       </Typography>
     </Box>
+  );
+}
+
+export function ProductTitleCell({
+  title,
+  stock = 0,
+  category,
+}: {
+  title: string;
+  stock?: number;
+  category: string;
+}) {
+  return (
+    <Box
+      sx={{
+        padding: 0.3,
+        backgroundColor: "#fff",
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: ".8rem",
+          fontWeight: "bold",
+          color: "#444",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {title}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: ".7rem",
+          color: "#666",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >{`${stock} in stock`}</Typography>
+      <ProductCategoryeCell category={category} />
+    </Box>
+  );
+}
+
+// todo: add action props
+export function AddToCartCell({ id }: { id: string | number }) {
+  return (
+    <IconButton>
+      <AddCircleIcon sx={{ color: "#0c6b58" }} />
+    </IconButton>
   );
 }
 
@@ -58,6 +111,7 @@ const ActionButton = styled(Button)({
   justifyContent: "start",
   width: "100%",
 });
+
 export function ActionCell() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null

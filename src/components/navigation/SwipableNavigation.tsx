@@ -103,7 +103,7 @@ function SwipableNavigation() {
     </Box>
   );
   return (
-    <Container
+    <Box
       sx={{ width: "100%", backgroundColor: "primary.main", position: "fixed" }}
     >
       <Box
@@ -138,7 +138,7 @@ function SwipableNavigation() {
           {list()}
         </Drawer>
       </Container>
-    </Container>
+    </Box>
   );
 }
 

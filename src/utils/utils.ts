@@ -32,3 +32,13 @@ export const shortenText = (text: string, maxLength: number): string => {
 
   return `${shortenedText} ...`;
 };
+
+export const formatAmount = (number: number) => {
+  if (typeof number !== "number") {
+    throw new Error("params must be a number");
+  }
+
+  const formattedNumber = number.toFixed(2);
+
+  return `$${formattedNumber}`;
+};

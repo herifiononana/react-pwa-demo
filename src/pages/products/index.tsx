@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import {
-  DataGrid,
-  GridColDef,
-  GridTreeNodeWithRender,
-  GridValueGetterParams,
-} from "@mui/x-data-grid";
 import { ProductFormated, formatProducts, getData } from "./ProductListUtils";
 import {
-  ActionCell,
-  ProductCategoryeCell,
+  AddToCartCell,
   ProductImageCell,
   ProductTitleCell,
 } from "../../components/datagridCell";
-import { defineGridColDef } from "../../utils/utils";
+import { formatAmount } from "../../utils/utils";
 import SearchAndFilter from "../../components/input/searchAndFilter";
 import FilterByCategory, {
   Category,
@@ -43,45 +36,131 @@ const CATEGORY_FILTER: Category[] = [
   },
 ];
 
-const columnConfig = [
-  {
-    field: "image",
-    header: "Image",
-    width: 150,
-    render: (
-      params: GridValueGetterParams<any, any, GridTreeNodeWithRender>
-    ) => <ProductImageCell image={params.row.image} />,
-  },
-  {
-    field: "title",
-    header: "Title",
-    width: 150,
-    render: ({
-      row: { title },
-    }: GridValueGetterParams<any, any, GridTreeNodeWithRender>) => (
-      <ProductTitleCell title={title} />
-    ),
-  },
-  {
-    field: "category",
-    header: "Category",
-    width: 150,
-    render: ({
-      row: { category },
-    }: GridValueGetterParams<any, any, GridTreeNodeWithRender>) => (
-      <ProductCategoryeCell category={category} />
-    ),
-  },
-  { field: "tags", header: "Tags", width: 150 },
-  { field: "price", header: "Price", width: 150 },
-  { field: "action", header: "", flex: 1, render: () => <ActionCell /> },
-];
+// const columnConfig = [
+//   {
+//     field: "image",
+//     header: "Image",
+//     width: 150,
+//     render: (
+//       params: GridValueGetterParams<any, any, GridTreeNodeWithRender>
+//     ) => <ProductImageCell image={params.row.image} />,
+//   },
+//   {
+//     field: "title",
+//     header: "Title",
+//     width: 150,
+//     render: ({
+//       row: { title },
+//     }: GridValueGetterParams<any, any, GridTreeNodeWithRender>) => (
+//       <ProductTitleCell title={title} />
+//     ),
+//   },
+//   {
+//     field: "category",
+//     header: "Category",
+//     width: 150,
+//     render: ({
+//       row: { category },
+//     }: GridValueGetterParams<any, any, GridTreeNodeWithRender>) => (
+//       <ProductCategoryeCell category={category} />
+//     ),
+//   },
+//   { field: "tags", header: "Tags", width: 150 },
+//   { field: "price", header: "Price", width: 150 },
+//   { field: "action", header: "", flex: 1, render: () => <ActionCell /> },
+// ];
+
+const Columns = () => {
+  return (
+    <Grid
+      container
+      sx={{
+        width: "100%",
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        backgroundColor: "#f1f5f9",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 2,
+        paddingTop: 0.5,
+        paddingBottom: 0.5,
+        borderBottom: 0.3,
+        borderColor: "#e1e5e9",
+      }}
+    >
+      <Grid item xs={2} md={2}></Grid>
+      <Grid item xs={5} md={5}>
+        <Typography
+          sx={{
+            fontSize: ".8rem",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          PRODUCT
+        </Typography>
+      </Grid>
+      <Grid item xs={3} md={3}>
+        <Typography
+          sx={{
+            fontSize: ".8rem",
+            textAlign: "center",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          PRICE
+        </Typography>
+      </Grid>
+      <Grid item xs={2} md={2}></Grid>
+    </Grid>
+  );
+};
+const ProductItem = ({ product }: any) => {
+  return (
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingInline: 1,
+      }}
+    >
+      <Grid item xs={2} md={2}>
+        <ProductImageCell image={product.image} />
+      </Grid>
+      <Grid item xs={5} md={5}>
+        <ProductTitleCell title={product.title} category={product.category} />
+      </Grid>
+      <Grid item xs={3} md={3}>
+        <Typography
+          sx={{
+            fontSize: ".8rem",
+            textAlign: "center",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {formatAmount(parseInt(product.price))}
+        </Typography>
+      </Grid>
+      <Grid item xs={2} md={2}>
+        <AddToCartCell id={product.id} />
+      </Grid>
+    </Grid>
+  );
+};
 
 function Products() {
   const [products, setProducts] = useState<ProductFormated[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const columns = defineGridColDef(columnConfig);
+  // const columns = defineGridColDef(columnConfig);
 
   useEffect(() => {
     let isMounted = true;
@@ -123,22 +202,19 @@ function Products() {
           height: "85%",
           borderRadius: "5px",
           backgroundColor: "white",
+          overflow: "auto",
         }}
       >
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <DataGrid
-            sx={{ backgroundColor: "#fff", height: "100%" }}
-            columns={columns as GridColDef[]}
-            rows={products}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10 } },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            rowHeight={100}
-          />
-        )}{" "}
+        <Box>
+          <Columns />
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            products.map((product, index) => (
+              <ProductItem key={index} product={product} />
+            ))
+          )}
+        </Box>
       </Box>
     </Container>
   );

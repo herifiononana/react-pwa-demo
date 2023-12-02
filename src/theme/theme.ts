@@ -25,6 +25,11 @@ export const lightTheme: Theme = createTheme({
       defaultProps: {
         size: "small",
       },
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
     },
     MuiTextField: {
       defaultProps: {

@@ -1,11 +1,23 @@
 import React from "react";
-import { Box, Button, IconButton, Popover, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Popover,
+  Typography as MUITypography,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SyncIcon from "@mui/icons-material/Sync";
 import styled from "@emotion/styled";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+
+const Typography = styled(MUITypography)({
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+});
 
 export function ProductImageCell({ image }: { image: string }) {
   return (
@@ -44,9 +56,6 @@ export function ProductCategoryeCell({ category }: { category: string }) {
         sx={{
           fontSize: ".8rem",
           color: "#fff",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
         }}
       >
         {category}
@@ -76,9 +85,6 @@ export function ProductTitleCell({
           fontSize: ".8rem",
           fontWeight: "bold",
           color: "#444",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
         }}
       >
         {title}
@@ -87,9 +93,6 @@ export function ProductTitleCell({
         sx={{
           fontSize: ".7rem",
           color: "#666",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
         }}
       >{`${stock} in stock`}</Typography>
       <ProductCategoryeCell category={category} />
@@ -172,6 +175,44 @@ export function ActionCell() {
           </ActionButton>
         </Box>
       </Popover>
+    </Box>
+  );
+}
+
+export function TitleCustomerCell({
+  firstname,
+  lastname,
+  email,
+  billingAdress,
+}: {
+  firstname: string;
+  lastname: string;
+  email: string;
+  billingAdress: string;
+}) {
+  return (
+    <Box>
+      <Typography
+        sx={{
+          fontSize: ".8rem",
+        }}
+      >{`${firstname} ${lastname}`}</Typography>
+      <Typography
+        sx={{
+          fontSize: ".8rem",
+          color: "primary.main",
+        }}
+      >
+        {email}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: ".8rem",
+          color: "#666",
+        }}
+      >
+        {billingAdress}
+      </Typography>
     </Box>
   );
 }

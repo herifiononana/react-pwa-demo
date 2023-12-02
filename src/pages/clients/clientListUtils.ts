@@ -4,11 +4,12 @@ import CustomerService, {
 
 export interface CustomerFormated {
   id: string;
+  image: string;
   firstname: string;
   lastname: string;
   email: string;
-  "billing adress": string;
-  "date created": string;
+  billingAdress: string;
+  dateCreated: string;
 }
 
 export const fetchCustomers = async () => {
@@ -24,7 +25,7 @@ export const formatCustomers = (customers: Customer[]): CustomerFormated[] => {
     firstname: customer?.first_name || "",
     lastname: customer?.last_name || "",
     email: customer?.email || "",
-    "billing adress": customer?.billing?.address_1 || "",
-    "date created": customer?.date_created || "",
+    billingAdress: customer?.billing?.address_1 || "",
+    dateCreated: customer?.date_created || "",
   }));
 };

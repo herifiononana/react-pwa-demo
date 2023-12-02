@@ -19,7 +19,7 @@ const Typography = styled(MUITypography)({
   textOverflow: "ellipsis",
 });
 
-export function ProductImageCell({ image }: { image: string }) {
+export function ImageCell({ image }: { image: string }) {
   return (
     <Box sx={{ width: "100%", height: "50%", overflow: "hidden" }}>
       <img

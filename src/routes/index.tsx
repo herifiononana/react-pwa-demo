@@ -8,7 +8,7 @@ import ROUTE from "./route";
 import AuthGuard from "../guards/AuthGuard";
 import Home from "../pages/home";
 import Products from "../pages/products";
-import Clients from "../pages/clients";
+import Clients from "../pages/customers";
 
 export const router = createBrowserRouter([
   {

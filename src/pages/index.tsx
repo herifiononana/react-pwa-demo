@@ -31,6 +31,8 @@ function Main() {
       <Container
         sx={{
           height: "100vh",
+          width: "100vw",
+          position: "fixed",
           marginTop: theme.spacing(6),
         }}
       >

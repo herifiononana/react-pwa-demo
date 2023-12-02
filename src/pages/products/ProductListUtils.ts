@@ -7,6 +7,7 @@ export interface ProductFormated {
   category: string;
   tags: string;
   price: string;
+  stock: number;
 }
 
 export const getData = async () => {
@@ -23,5 +24,6 @@ export const formatProducts = (products: Product[]): ProductFormated[] => {
     category: product.product_category || "",
     tags: product.product_ugs || "",
     price: product.product_price || "",
+    stock: product.product_stock || 0,
   }));
 };

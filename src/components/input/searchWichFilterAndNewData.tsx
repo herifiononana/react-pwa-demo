@@ -3,7 +3,11 @@ import { Box, TextField, Tooltip, IconButton } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
-function SearchWichFilterAndNewData() {
+function SearchWichFilterAndNewData({
+  addNewData,
+}: {
+  addNewData: () => void;
+}) {
   return (
     <Box
       sx={{
@@ -23,7 +27,7 @@ function SearchWichFilterAndNewData() {
       />
 
       <Tooltip title="Add new customer">
-        <IconButton>
+        <IconButton onClick={addNewData}>
           <PersonAddAlt1Icon sx={{ color: "primary.main" }} />
         </IconButton>
       </Tooltip>

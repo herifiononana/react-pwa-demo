@@ -9,10 +9,12 @@ import { ActionCell, TitleCustomerCell } from "../../components/datagridCell";
 import SearchWichFilterAndNewData from "../../components/input/searchWichFilterAndNewData";
 import CircularProgress from "../../components/progress";
 import { Columns, ListItem } from "../../components/ListView";
+import AddOrEditCustomerModal from "../../components/customer/addOrEditCustomer";
 
 function Customers() {
   const [customers, setCustomers] = useState<CustomerFormated[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [openModalCustomer, setOpenModalCustomer] = useState<boolean>(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -52,7 +54,9 @@ function Customers() {
         height: "90%",
       }}
     >
-      <SearchWichFilterAndNewData />
+      <SearchWichFilterAndNewData
+        addNewData={() => setOpenModalCustomer(true)}
+      />
       <Box
         sx={{
           width: "100%",
@@ -100,6 +104,10 @@ function Customers() {
           )}
         </Box>
       </Box>
+      <AddOrEditCustomerModal
+        open={openModalCustomer}
+        handleClose={() => setOpenModalCustomer(false)}
+      />
     </Container>
   );
 }

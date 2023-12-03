@@ -16,7 +16,7 @@ export const lightTheme: Theme = createTheme({
       default: "#FFFFFF",
     },
     text: {
-      primary: "#486581",
+      primary: "#243b53",
       secondary: "#888",
     },
   },

@@ -1,120 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { Box, Container, Typography } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { ProductFormated, formatProducts, getData } from "./ProductListUtils";
-import { AddToCartCell, ProductTitleCell } from "../../components/datagridCell";
-import { formatAmount } from "../../utils/utils";
-import SearchAndFilter from "../../components/input/searchAndFilter";
-import FilterByCategory, {
-  Category,
-} from "../../components/input/filterByCategory";
-import CircularProgress from "../../components/progress";
-import { Columns, ListItem } from "../../components/ListView";
-
-const CATEGORY_FILTER: Category[] = [
-  {
-    name: "Featured",
-    icon: <StarIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
-  },
-  {
-    name: "On Sale",
-    icon: <MonetizationOnIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
-  },
-  {
-    name: "Select Category",
-    icon: <FolderOpenIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
-  },
-  {
-    name: "Select tag",
-    icon: <LocalOfferIcon sx={{ fontSize: "1rem", marginRight: 0.4 }} />,
-  },
-];
+import React, { useState } from "react";
+import { Box, Container, Tab, Tabs } from "@mui/material";
+import Cart from "./cart";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import List from "./list";
 
 function Products() {
-  const [products, setProducts] = useState<ProductFormated[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [tabValue, setTabValue] = useState<number>(0);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    setLoading(true);
-    const fetchProduct = async () => {
-      try {
-        const data = await getData();
-        if (isMounted) setProducts(formatProducts(data));
-      } catch (error) {
-        console.log("Error fetching data: ", error);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-    fetchProduct();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   return (
-    <Container
+    <Box
       sx={{
-        backgroundColor: "primary.light",
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "93.3vh",
         paddingTop: 1,
-        paddingBottom: 1,
-        borderRadius: "5px",
-        height: "90%",
       }}
     >
-      <SearchAndFilter />
-      <FilterByCategory categories={CATEGORY_FILTER} />
-      <Box
+      <Container>
+        <Box
+          sx={{
+            backgroundColor: "primary.light",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
+            borderRadius: "5px",
+            padding: 1,
+            height: "83vh",
+          }}
+        >
+          {tabValue === 0 ? <List /> : <Cart />}
+        </Box>
+      </Container>
+
+      <Tabs
         sx={{
           width: "100%",
-          height: "85%",
-          borderRadius: "5px",
-          backgroundColor: "white",
-          overflow: "auto",
+          backgroundColor: "#FFF",
+          alignItems: "center",
+          height: "5vh",
         }}
+        value={tabValue}
+        onChange={handleChangeTab}
       >
-        <Box>
-          <Columns firstCol="PRODUCT" secondCol="PRICE" />
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            products.map((product, index) => (
-              <ListItem
-                key={index}
-                data={product}
-                TitleView={
-                  <ProductTitleCell
-                    title={product.title}
-                    category={product.category}
-                  />
-                }
-                SecondContent={
-                  <Typography
-                    sx={{
-                      fontSize: ".8rem",
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {formatAmount(parseInt(product.price))}
-                  </Typography>
-                }
-                ActionView={<AddToCartCell id={product.id} />}
-              />
-            ))
-          )}
-        </Box>
-      </Box>
-    </Container>
+        <Tab
+          sx={{
+            width: "50%",
+            fontSize: ".8rem",
+            textTransform: "none",
+          }}
+          iconPosition="start"
+          icon={<Inventory2Icon />}
+          label="Product"
+          value={0}
+        />
+        <Tab
+          sx={{
+            width: "50%",
+            fontSize: ".8rem",
+            textTransform: "none",
+          }}
+          iconPosition="start"
+          icon={<ShoppingCartIcon />}
+          label="Cart"
+          value={1}
+        />
+      </Tabs>
+    </Box>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Container, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { useAuth } from "../provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import ROUTE from "../routes/route";
@@ -28,16 +28,17 @@ function Main() {
         <SwipableNavigation />
       </Box>
 
-      <Container
+      <Box
         sx={{
           height: "100vh",
           width: "100vw",
+          backgroundColor: "#ecf0f4",
           position: "fixed",
-          marginTop: theme.spacing(6),
+          marginTop: theme.spacing(5),
         }}
       >
         <Outlet />
-      </Container>
+      </Box>
     </Box>
   );
 }

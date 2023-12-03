@@ -44,71 +44,73 @@ function Customers() {
   }, []);
 
   return (
-    <Container
-      sx={{
-        backgroundColor: "primary.light",
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
-        paddingTop: 1,
-        paddingBottom: 1,
-        borderRadius: "5px",
-        height: "90%",
-      }}
-    >
-      <SearchWichFilterAndNewData
-        addNewData={() => setOpenModalCustomer(true)}
-      />
-      <Box
+    <Box sx={{ padding: 1, backgroundColor: "primary.light" }}>
+      <Container
         sx={{
-          width: "100%",
-          height: "85%",
+          backgroundColor: "primary.light",
+          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
+          padding: 1,
           borderRadius: "5px",
-          backgroundColor: "white",
-          overflow: "auto",
+          height: "93vh",
         }}
       >
-        <Box>
-          <Columns firstCol="CUSTOMER" secondCol="DATE CREATED" />
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            customers.map((customer, index) => (
-              <Box key={index}>
-                <Divider sx={{ width: "100%" }} />
-                <ListItem
-                  data={customer}
-                  TitleView={
-                    <TitleCustomerCell
-                      firstname={customer.firstname}
-                      lastname={customer.lastname}
-                      email={customer.lastname}
-                      billingAdress={customer.billingAdress}
-                    />
-                  }
-                  SecondContent={
-                    <Typography
-                      sx={{
-                        fontSize: ".8rem",
-                        textAlign: "center",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {customer.dateCreated}
-                    </Typography>
-                  }
-                  ActionView={<ActionCell />}
-                />
-              </Box>
-            ))
-          )}
+        <SearchWichFilterAndNewData
+          addNewData={() => setOpenModalCustomer(true)}
+        />
+        <Box
+          sx={{
+            width: "100%",
+            height: "85%",
+            borderRadius: "5px",
+            backgroundColor: "white",
+            overflow: "auto",
+          }}
+        >
+          <Box>
+            <Columns firstCol="CUSTOMER" secondCol="DATE CREATED" />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              customers.map((customer, index) => (
+                <Box key={index}>
+                  <Divider sx={{ width: "100%" }} />
+                  <ListItem
+                    even={index % 2 === 0}
+                    data={customer}
+                    TitleView={
+                      <TitleCustomerCell
+                        firstname={customer.firstname}
+                        lastname={customer.lastname}
+                        email={customer.lastname}
+                        billingAdress={customer.billingAdress}
+                      />
+                    }
+                    SecondContent={
+                      <Typography
+                        sx={{
+                          fontSize: ".8rem",
+                          textAlign: "center",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {customer.dateCreated}
+                      </Typography>
+                    }
+                    ActionView={<ActionCell />}
+                  />
+                </Box>
+              ))
+            )}
+          </Box>
         </Box>
-      </Box>
-      <AddOrEditCustomerModal
-        open={openModalCustomer}
-        handleClose={() => setOpenModalCustomer(false)}
-      />
-    </Container>
+        <AddOrEditCustomerModal
+          open={openModalCustomer}
+          handleClose={() => setOpenModalCustomer(false)}
+        />
+      </Container>
+    </Box>
   );
 }
 

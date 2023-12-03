@@ -81,6 +81,7 @@ function List() {
               <ListItem
                 key={index}
                 data={product}
+                even={index % 2 === 0}
                 TitleView={
                   <ProductTitleCell
                     title={product.title}

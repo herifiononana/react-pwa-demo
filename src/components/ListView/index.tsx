@@ -63,11 +63,13 @@ export const ListItem = ({
   TitleView,
   SecondContent,
   ActionView,
+  even,
 }: {
   data: any;
   TitleView: JSX.Element;
   SecondContent: JSX.Element;
   ActionView: JSX.Element;
+  even: boolean;
 }) => {
   return (
     <Grid
@@ -77,7 +79,8 @@ export const ListItem = ({
         alignItems: "center",
         justifyContent: "space-between",
         paddingInline: 1,
-        // marginBottom: 1,
+        backgroundColor: even ? "#fafbfc" : "#red",
+        marginBottom: 1,
       }}
     >
       <Grid item xs={2} md={2}>

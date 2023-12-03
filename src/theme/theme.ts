@@ -21,6 +21,13 @@ export const lightTheme: Theme = createTheme({
     },
   },
   components: {
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.2rem",
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         size: "small",

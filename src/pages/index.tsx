@@ -34,7 +34,7 @@ function Main() {
           width: "100vw",
           backgroundColor: "#ecf0f4",
           position: "fixed",
-          marginTop: theme.spacing(5),
+          marginTop: theme.spacing(4),
         }}
       >
         <Outlet />

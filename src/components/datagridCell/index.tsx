@@ -77,7 +77,6 @@ export function ProductTitleCell({
     <Box
       sx={{
         padding: 0.3,
-        backgroundColor: "#fff",
       }}
     >
       <Typography

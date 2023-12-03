@@ -18,7 +18,7 @@ function Products() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "93.3vh",
+        height: "94vh",
         paddingTop: 1,
       }}
     >

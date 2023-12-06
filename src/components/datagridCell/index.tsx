@@ -12,6 +12,8 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SyncIcon from "@mui/icons-material/Sync";
 import styled from "@emotion/styled";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import BrokenImageIcon from "@mui/icons-material/BrokenImage";
+import COLORS from "../../styles/color";
 
 const Typography = styled(MUITypography)({
   whiteSpace: "nowrap",
@@ -22,20 +24,30 @@ const Typography = styled(MUITypography)({
 export function ImageCell({ image }: { image: string }) {
   return (
     <Box sx={{ width: "100%", height: "50%", overflow: "hidden" }}>
-      <img
-        src={image}
-        alt={image}
-        width={"100%"}
-        height={"100%"}
-        loading="lazy"
-        style={{
-          objectFit: "cover",
-          maxWidth: "80px",
-          maxHeight: "80px",
-          minWidth: "40px",
-          minHeight: "40px",
-        }}
-      />
+      {true ? (
+        <img
+          src={image}
+          alt={image}
+          width={"100%"}
+          height={"100%"}
+          loading="lazy"
+          style={{
+            objectFit: "cover",
+            maxWidth: "80px",
+            maxHeight: "80px",
+            minWidth: "40px",
+            minHeight: "40px",
+          }}
+        />
+      ) : (
+        <BrokenImageIcon
+          sx={{
+            width: "100%",
+            height: "100%",
+            color: COLORS.background.disabled,
+          }}
+        />
+      )}
     </Box>
   );
 }

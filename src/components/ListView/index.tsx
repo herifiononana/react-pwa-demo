@@ -84,7 +84,10 @@ export const ListItem = ({
       }}
     >
       <Grid item xs={2} md={2}>
-        <ImageCell image={data.image} />
+        {/* todo: to be improved */}
+        <ImageCell
+          image={data?.product_image || data?.avatar_url || data?.image}
+        />
       </Grid>
       <Grid item xs={5} md={5}>
         {TitleView}

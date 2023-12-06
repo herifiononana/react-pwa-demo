@@ -12,11 +12,35 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { BoxFlex, ButtonText, Typography } from "./styles";
 import { BottomItem, ProductItem, RemoveProductItem } from "./cartUtil";
 import { Columns, ListItem } from "../../components/ListView";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../store/store";
+import Select from "react-select";
+import COLORS from "../../styles/color";
+import { Customer } from "../../services/customer/customerService";
+import { getCustomers } from "../../features/customer/customerAction";
+import CloseIcon from "@mui/icons-material/Close";
 
-// todo: refactor code
+// todo: refactor react-select component
 
+const formatCustomerOption = (customers: Customer[]) => {
+  return customers.map((customer) => ({
+    value: customer.id,
+    label: customer.first_name,
+  }));
+};
 function Cart() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [customerSelected, setCustomerSelected] = useState<any>(null);
+  const dispatch = useAppDispatch();
+  const { data: customers } = useSelector((state: RootState) => state.customer);
+
+  const handleChange = (selectedOption: any) => {
+    setCustomerSelected(selectedOption);
+  };
+
+  useEffect(() => {
+    dispatch(getCustomers());
+  }, [dispatch]);
 
   return (
     <>
@@ -29,10 +53,65 @@ function Cart() {
             marginBottom: 1,
           }}
         >
-          <MUITypography sx={{ color: "primary.main" }}>
+          <MUITypography sx={{ color: "primary.main", marginRight: 0.5 }}>
             Customer:
           </MUITypography>
-          <Box></Box>
+          <Box
+            sx={{
+              zIndex: 1000,
+              width: "100%",
+              textAlign: "left",
+            }}
+          >
+            {customerSelected ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <MUITypography
+                  sx={{
+                    borderRadius: "25px",
+                    paddingInline: 1,
+                    color: COLORS.text.white,
+                    fontSize: ".9rem",
+                    backgroundColor: "primary.main",
+                  }}
+                >
+                  {customerSelected.label}
+                </MUITypography>
+                <IconButton onClick={() => setCustomerSelected(null)}>
+                  <CloseIcon sx={{ color: "primary.main" }} />
+                </IconButton>
+              </Box>
+            ) : (
+              <Select
+                className="basic-single"
+                classNamePrefix="select"
+                // onInputChange={handleInputChange}
+                onChange={handleChange}
+                isClearable={true}
+                isRtl={false}
+                isSearchable={true}
+                name="product"
+                options={formatCustomerOption(customers)}
+                placeholder="Select customer"
+                styles={{
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    borderColor: "#888",
+                    width: "100%",
+                  }),
+                  option: () => ({
+                    fontSize: ".9rem",
+                    margin: 20,
+                    color: COLORS.text.main,
+                  }),
+                }}
+              />
+            )}
+          </Box>
           <Box sx={{ display: "flex", justifyContent: "space-around" }}>
             <IconButton sx={{ color: "primary.main" }}>
               <PersonAddAlt1Icon />

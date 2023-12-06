@@ -22,22 +22,10 @@ export interface Customer {
   };
 }
 
-const URL = "/customers/v0/all";
+const url = "/customers/v0/all";
 
 const CustomerService = {
-  getCustomers: async ({
-    id,
-    page,
-    perPage,
-  }: {
-    id?: number;
-    page?: number;
-    perPage?: number;
-  }): Promise<Customer[]> => {
-    let url = URL;
-    if (id) url += `/${id}`;
-    else if (page && perPage) url += `?page=${page}&per_page=${perPage}`;
-
+  getCustomers: async (): Promise<Customer[]> => {
     try {
       const response: AxiosResponse<Customer[]> = await axios.get(url);
 

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
 
+// todo: fixe state attribution value
 interface AuthState {
   user: any;
   status: "idle" | "loading" | "succeeded" | "failed";

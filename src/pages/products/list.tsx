@@ -4,7 +4,6 @@ import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { ProductFormated, formatProducts, getData } from "./ProductListUtils";
 import { AddToCartCell, ProductTitleCell } from "../../components/datagridCell";
 import { formatAmount } from "../../utils/utils";
 import SearchAndFilter from "../../components/input/searchAndFilter";
@@ -13,6 +12,8 @@ import FilterByCategory, {
 } from "../../components/input/filterByCategory";
 import CircularProgress from "../../components/progress";
 import { Columns, ListItem } from "../../components/ListView";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const CATEGORY_FILTER: Category[] = [
   {
@@ -34,34 +35,27 @@ const CATEGORY_FILTER: Category[] = [
 ];
 
 function List() {
-  const [products, setProducts] = useState<ProductFormated[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<
+    { value: string; label: string } | undefined
+  >(undefined);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    error,
+    data: products,
+    status,
+  } = useSelector((state: RootState) => state.product);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    setLoading(true);
-    const fetchProduct = async () => {
-      try {
-        const data = await getData();
-        if (isMounted) setProducts(formatProducts(data));
-      } catch (error) {
-        console.log("Error fetching data: ", error);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-    fetchProduct();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const filterProduct = (id: string) => {
+    if (id) return products.filter((product) => product.product_id === id);
+    return products;
+  };
 
   return (
     <>
-      <SearchAndFilter />
+      <SearchAndFilter
+        data={products}
+        setSelectedProduct={setSelectedProduct}
+      />
       <FilterByCategory categories={CATEGORY_FILTER} />
       <Box
         sx={{
@@ -74,36 +68,38 @@ function List() {
       >
         <Box>
           <Columns firstCol="PRODUCT" secondCol="PRICE" />
-          {loading ? (
+          {status === "loading" ? (
             <CircularProgress />
           ) : (
-            products.map((product, index) => (
-              <ListItem
-                key={index}
-                data={product}
-                even={index % 2 === 0}
-                TitleView={
-                  <ProductTitleCell
-                    title={product.title}
-                    category={product.category}
-                  />
-                }
-                SecondContent={
-                  <Typography
-                    sx={{
-                      fontSize: ".8rem",
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {formatAmount(parseInt(product.price))}
-                  </Typography>
-                }
-                ActionView={<AddToCartCell id={product.id} />}
-              />
-            ))
+            filterProduct(selectedProduct?.value || "").map(
+              (product, index) => (
+                <ListItem
+                  key={index}
+                  data={product}
+                  even={index % 2 === 0}
+                  TitleView={
+                    <ProductTitleCell
+                      title={product?.product_name || ""}
+                      category={product?.product_category || ""}
+                    />
+                  }
+                  SecondContent={
+                    <Typography
+                      sx={{
+                        fontSize: ".8rem",
+                        textAlign: "center",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {formatAmount(parseInt(product.product_price || "0"))}
+                    </Typography>
+                  }
+                  ActionView={<AddToCartCell id={product.product_id} />}
+                />
+              )
+            )
           )}
         </Box>
       </Box>

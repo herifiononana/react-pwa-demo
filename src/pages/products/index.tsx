@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import Cart from "./cart";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import List from "./list";
+import { RootState, useAppDispatch } from "../../store/store";
+import { getProducts } from "../../features/product/productAction";
+import { useSelector } from "react-redux";
 
 function Products() {
+  const dispatch = useAppDispatch();
   const [tabValue, setTabValue] = useState<number>(0);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
 
   return (
     <Box

@@ -1,47 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Box, Container, Divider, Typography } from "@mui/material";
-import {
-  CustomerFormated,
-  fetchCustomers,
-  formatCustomers,
-} from "./customersListUtils";
 import { ActionCell, TitleCustomerCell } from "../../components/datagridCell";
 import SearchWichFilterAndNewData from "../../components/input/searchWichFilterAndNewData";
 import CircularProgress from "../../components/progress";
 import { Columns, ListItem } from "../../components/ListView";
 import AddOrEditCustomerModal from "../../components/customer/addOrEditCustomer";
+import { RootState, useAppDispatch } from "../../store/store";
+import { useSelector } from "react-redux";
+import { getCustomers } from "../../features/customer/customerAction";
 
 function Customers() {
-  const [customers, setCustomers] = useState<CustomerFormated[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [openModalCustomer, setOpenModalCustomer] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
+  const {
+    status,
+    data: customers,
+    error,
+  } = useSelector((state: RootState) => state.customer);
+
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchCustomers();
-        if (isMounted) {
-          setCustomers(formatCustomers(data));
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      // Cleanup function to run when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
+    dispatch(getCustomers());
+  }, [dispatch]);
 
   return (
     <Box sx={{ padding: 1, backgroundColor: "primary.light" }}>
@@ -68,7 +48,7 @@ function Customers() {
         >
           <Box>
             <Columns firstCol="CUSTOMER" secondCol="DATE CREATED" />
-            {loading ? (
+            {status === "loading" ? (
               <CircularProgress />
             ) : (
               customers.map((customer, index) => (
@@ -79,10 +59,10 @@ function Customers() {
                     data={customer}
                     TitleView={
                       <TitleCustomerCell
-                        firstname={customer.firstname}
-                        lastname={customer.lastname}
-                        email={customer.lastname}
-                        billingAdress={customer.billingAdress}
+                        firstname={customer?.first_name || ""}
+                        lastname={customer?.last_name || ""}
+                        email={customer?.email || ""}
+                        billingAdress={customer.billing?.address_1 || ""}
                       />
                     }
                     SecondContent={
@@ -95,7 +75,7 @@ function Customers() {
                           textOverflow: "ellipsis",
                         }}
                       >
-                        {customer.dateCreated}
+                        {customer?.date_created}
                       </Typography>
                     }
                     ActionView={<ActionCell />}

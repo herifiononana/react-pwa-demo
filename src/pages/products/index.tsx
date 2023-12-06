@@ -32,7 +32,7 @@ function Products() {
             height: "83vh",
           }}
         >
-          {tabValue === 0 ? <List /> : <Cart />}
+          {tabValue === 1 ? <List /> : <Cart />}
         </Box>
       </Container>
 
@@ -53,8 +53,8 @@ function Products() {
             textTransform: "none",
           }}
           iconPosition="start"
-          icon={<Inventory2Icon />}
-          label="Product"
+          icon={<ShoppingCartIcon />}
+          label="Cart"
           value={0}
         />
         <Tab
@@ -64,8 +64,8 @@ function Products() {
             textTransform: "none",
           }}
           iconPosition="start"
-          icon={<ShoppingCartIcon />}
-          label="Cart"
+          icon={<Inventory2Icon />}
+          label="Product"
           value={1}
         />
       </Tabs>

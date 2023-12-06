@@ -3,6 +3,7 @@ import TuneIcon from "@mui/icons-material/Tune";
 import { Box, IconButton } from "@mui/material";
 import Select from "react-select";
 import { Product } from "../../services/product/productService";
+import COLORS from "../../styles/color";
 
 interface SearchOption {
   value: string;
@@ -75,6 +76,11 @@ function SearchAndFilter({ data, setSelectedProduct }: SearchAndFilterProps) {
               ...baseStyles,
               borderColor: "#888",
               width: "100%",
+            }),
+            option: () => ({
+              fontSize: ".9rem",
+              margin: 20,
+              color: COLORS.text.main,
             }),
           }}
         />

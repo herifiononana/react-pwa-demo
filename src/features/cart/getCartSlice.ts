@@ -14,25 +14,25 @@ const initialState: CartState = {
   error: null,
 };
 
-const cartSlice = createSlice({
-  name: "cart",
+const getCartSlice = createSlice({
+  name: "getCart",
   initialState,
   reducers: {
-    addToCartStart: (state) => {
-      state.status = "loading";
+    getCartStart: (state) => {
+      state = { ...state, status: "loading" };
     },
-    addToCartSucces: (state, action: PayloadAction<Cart>) => {
+    getCartSuccess: (state, action: PayloadAction<Cart>) => {
       state.status = "idle";
-      state.data = action.payload; // todo:to be checked
+      state.data = action.payload;
     },
-    addToCartFailure: (state, action: PayloadAction<string>) => {
+    getCartFailure: (state, action: PayloadAction<string>) => {
       state.status = "failed";
-      state.error = action.payload as string;
+      state.error = action.payload;
     },
   },
 });
 
-export const { addToCartStart, addToCartSucces, addToCartFailure } =
-  cartSlice.actions;
+export const { getCartStart, getCartSuccess, getCartFailure } =
+  getCartSlice.actions;
 
-export default cartSlice.reducer;
+export default getCartSlice.reducer;

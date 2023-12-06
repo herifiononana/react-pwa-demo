@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import { Columns, ListItem } from "../../components/ListView";
 
 function Cart() {
   const [loading, setLoading] = useState<boolean>(false);
+
   return (
     <>
       <Box>

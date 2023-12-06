@@ -2,18 +2,19 @@ import { AxiosResponse } from "axios";
 import axios from "../../config/axiosConfig";
 import LocalStorage from "../localStorage/localStorage";
 
-interface CartItem {
-  product_id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  subtotal: number;
+// todo: define Cart interface
+export interface Cart {
   // ... other cart field
+  status: boolean;
+  data: any;
+  discount: number;
+  taxes: number;
+  subtotal: number;
 }
 
 interface AddProductRequest {
   product_id: number;
-  quantity: number;
+  customer_id: number;
 }
 
 interface UpdateItemRequest {
@@ -25,27 +26,24 @@ interface RemoveItemRequest {
   key: string; // Unique key to item in basket
 }
 
-interface CartResponse {
-  id: number;
-  items: CartItem[];
-  total: number;
-  subtotal: number;
-  // ... other cart detail
-}
+// todo: move to another file
+const url = "https://fredallard.kinsta.cloud/pos/api/cart-view.php";
 
-const url = "/cart";
+const CartService = {
+  getCart: async (customer_id: number): Promise<Cart> => {
+    const data = new FormData();
+    data.append("customer_id", customer_id.toString());
 
-const CartProduct = {
-  getCart: async (): Promise<CartResponse> => {
-    const accessToken = LocalStorage.getToken();
     try {
-      const response: AxiosResponse<CartResponse> = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+      const response: AxiosResponse<Cart> = await axios.post(url, {
+        data: data,
+        baseURL: "",
       });
 
+      console.log("response :>> ", response);
+
       if (response.status === 200) {
+        console.log("response.data :>> ", response.data);
         return response.data;
       } else {
         console.error(
@@ -176,4 +174,4 @@ const CartProduct = {
     }
   },
 };
-export default CartProduct;
+export default CartService;

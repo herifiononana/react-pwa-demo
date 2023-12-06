@@ -13,7 +13,7 @@ export const getCustomers =
   (): ThunkAction<void, RootState, unknown, any> => async (dispatch) => {
     dispatch(getCustomersStart());
     try {
-      const data: Customer[] = await CustomerService.getCustomers({});
+      const data: Customer[] = await CustomerService.getCustomers();
       dispatch(getCustomersSuccess(data));
     } catch (error) {
       dispatch(getCustomersFailure(error as string));

@@ -34,7 +34,4 @@ export const styleTypographyWithBorder: SxProps<Theme> = {
   padding: 0.4,
   borderColor: "primary.light",
   borderRadius: "4px",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center",
 };

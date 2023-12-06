@@ -1,16 +1,17 @@
+import React, { useState } from "react";
 import {
   Box,
   Button,
   IconButton,
   Typography as MUITypography,
 } from "@mui/material";
-import React, { useState } from "react";
 import CircularProgress from "../../components/progress";
 import TuneIcon from "@mui/icons-material/Tune";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { BoxFlex, ButtonText } from "./styles";
-import { BottomItem, Columns, ListItem } from "./cartUtil";
+import { BoxFlex, ButtonText, Typography } from "./styles";
+import { BottomItem, ProductItem, RemoveProductItem } from "./cartUtil";
+import { Columns, ListItem } from "../../components/ListView";
 
 // todo: refactor code
 
@@ -51,12 +52,19 @@ function Cart() {
             marginBottom: 1,
           }}
         >
-          <Columns />
+          <Columns firstCol={"PRODUCT"} secondCol={"TOTAL"} />
           {loading ? (
             <CircularProgress />
           ) : (
             [1, 1].map((product, index) => (
-              <ListItem key={index} product={product} even={index % 2 === 0} />
+              <ListItem
+                key={index}
+                data={product}
+                even={index % 2 === 0}
+                TitleView={<ProductItem />}
+                SecondContent={<Typography>$1.00</Typography>}
+                ActionView={<RemoveProductItem />}
+              />
             ))
           )}
         </Box>

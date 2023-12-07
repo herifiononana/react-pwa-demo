@@ -1,8 +1,8 @@
 import { ThunkAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
-import { addToCartFailure, addToCartStart, addToCartSucces } from "./cartSlice";
-import CartService from "../../services/cart/cartService";
-import { getCartSuccess } from "./getCartSlice";
+import { addToCartFailure, addToCartStart } from "./cartSlice";
+import CartService, { Cart } from "../../services/cart/cartService";
+import { getCartFailure, getCartStart, getCartSuccess } from "./getCartSlice";
 
 interface AddToCartParams {
   product_id: number;
@@ -25,13 +25,12 @@ export const addToCart =
 export const getCart =
   (customer_id: number): ThunkAction<void, RootState, unknown, any> =>
   async (dispatch) => {
-    dispatch(addToCartStart());
+    dispatch(getCartStart());
     try {
-      const cart = await CartService.getCart(customer_id);
-      console.log("cart :>> ", cart);
+      const cart: Cart = await CartService.getCart(customer_id);
 
       if (cart) dispatch(getCartSuccess(cart));
     } catch (error) {
-      dispatch(addToCartFailure(error as string));
+      dispatch(getCartFailure(error as string));
     }
   };

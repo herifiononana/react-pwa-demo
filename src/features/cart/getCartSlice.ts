@@ -19,7 +19,7 @@ const getCartSlice = createSlice({
   initialState,
   reducers: {
     getCartStart: (state) => {
-      state = { ...state, status: "loading" };
+      state.status = "loading";
     },
     getCartSuccess: (state, action: PayloadAction<Cart>) => {
       state.status = "idle";

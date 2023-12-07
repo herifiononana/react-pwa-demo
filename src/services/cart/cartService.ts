@@ -35,9 +35,11 @@ const CartService = {
     data.append("customer_id", customer_id.toString());
 
     try {
-      const response: AxiosResponse<Cart> = await axios.post(url, {
-        data: data,
+      const response: AxiosResponse<Cart> = await axios.post(url, data, {
         baseURL: "",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       console.log("response :>> ", response);

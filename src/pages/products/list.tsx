@@ -39,11 +39,9 @@ function List() {
     { value: string; label: string } | undefined
   >(undefined);
 
-  const {
-    error,
-    data: products,
-    status,
-  } = useSelector((state: RootState) => state.product);
+  const { data: products, status } = useSelector(
+    (state: RootState) => state.product
+  );
 
   const filterProduct = (id: string) => {
     if (id) return products.filter((product) => product.product_id === id);

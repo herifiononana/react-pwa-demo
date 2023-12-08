@@ -1,27 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Box, Container, Divider, Typography } from "@mui/material";
 import { ActionCell, TitleCustomerCell } from "../../components/datagridCell";
-import SearchWichFilterAndNewData from "../../components/input/searchWichFilterAndNewData";
+import SearchWichFilterAndNewData, {
+  SearchOption,
+} from "../../components/input/searchWichFilterAndNewData";
 import CircularProgress from "../../components/progress";
 import { Columns, ListItem } from "../../components/ListView";
 import AddOrEditCustomerModal from "../../components/customer/addOrEditCustomer";
 import { RootState, useAppDispatch } from "../../store/store";
 import { useSelector } from "react-redux";
 import { getCustomers } from "../../features/customer/customerAction";
+import { Customer } from "../../services/customer/customerService";
 
 function Customers() {
   const [openModalCustomer, setOpenModalCustomer] = useState<boolean>(false);
-
+  const [selectedCustomer, setSelectedCustomer] = useState<SearchOption | null>(
+    null
+  );
   const dispatch = useAppDispatch();
-  const {
-    status,
-    data: customers,
-    error,
-  } = useSelector((state: RootState) => state.customer);
+  const { status, data: customers } = useSelector(
+    (state: RootState) => state.customer
+  );
 
   useEffect(() => {
     dispatch(getCustomers());
   }, [dispatch]);
+
+  const filterCustomer = (id: string) => {
+    if (id)
+      return customers.filter(
+        (customer: Customer) => customer?.id === parseInt(id)
+      );
+    return customers;
+  };
 
   return (
     <Box sx={{ padding: 1, backgroundColor: "primary.light" }}>
@@ -34,9 +45,12 @@ function Customers() {
           height: "93vh",
         }}
       >
-        <SearchWichFilterAndNewData
-          addNewData={() => setOpenModalCustomer(true)}
-        />
+        <Box sx={{ zIndex: 1000 }}>
+          <SearchWichFilterAndNewData
+            data={customers}
+            {...{ setOpenModalCustomer, setSelectedCustomer }}
+          />
+        </Box>
         <Box
           sx={{
             width: "100%",
@@ -51,37 +65,39 @@ function Customers() {
             {status === "loading" ? (
               <CircularProgress />
             ) : (
-              customers.map((customer, index) => (
-                <Box key={index}>
-                  <Divider sx={{ width: "100%" }} />
-                  <ListItem
-                    even={index % 2 === 0}
-                    data={customer}
-                    TitleView={
-                      <TitleCustomerCell
-                        firstname={customer?.first_name || ""}
-                        lastname={customer?.last_name || ""}
-                        email={customer?.email || ""}
-                        billingAdress={customer.billing?.address_1 || ""}
-                      />
-                    }
-                    SecondContent={
-                      <Typography
-                        sx={{
-                          fontSize: ".8rem",
-                          textAlign: "center",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {customer?.date_created}
-                      </Typography>
-                    }
-                    ActionView={<ActionCell />}
-                  />
-                </Box>
-              ))
+              filterCustomer(selectedCustomer?.value || "").map(
+                (customer, index) => (
+                  <Box key={index}>
+                    <Divider sx={{ width: "100%" }} />
+                    <ListItem
+                      even={index % 2 === 0}
+                      data={customer}
+                      TitleView={
+                        <TitleCustomerCell
+                          firstname={customer?.first_name || ""}
+                          lastname={customer?.last_name || ""}
+                          email={customer?.email || ""}
+                          billingAdress={customer.billing?.address_1 || ""}
+                        />
+                      }
+                      SecondContent={
+                        <Typography
+                          sx={{
+                            fontSize: ".8rem",
+                            textAlign: "center",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {customer?.date_created}
+                        </Typography>
+                      }
+                      ActionView={<ActionCell />}
+                    />
+                  </Box>
+                )
+              )
             )}
           </Box>
         </Box>

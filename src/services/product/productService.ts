@@ -12,22 +12,13 @@ export interface Product {
   product_image?: string;
 }
 
-const URL = "/products/v0/all";
+const URL = "/products/v0";
 
 const ProductService = {
-  getProducts: async ({
-    id,
-    page,
-    perPage,
-  }: {
-    id?: number;
-    page?: number;
-    perPage?: number;
-  }): Promise<Product[]> => {
+  getProducts: async (id?: number): Promise<Product[]> => {
     let url = URL;
-    if (id) url += `/${id}`;
-    else if (page && perPage) url += `?page=${page}&per_page=${perPage}`;
-
+    if (id) url += `/product?id=${id}`;
+    else url = `${URL}/all`;
     try {
       const response: AxiosResponse<Product[]> = await axios.get(url);
 

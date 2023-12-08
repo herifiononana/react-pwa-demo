@@ -24,7 +24,7 @@ const Typography = styled(MUITypography)({
 export function ImageCell({ image }: { image: string }) {
   return (
     <Box sx={{ width: "100%", height: "50%", overflow: "hidden" }}>
-      {true ? (
+      {image ? (
         <img
           src={image}
           alt={image}

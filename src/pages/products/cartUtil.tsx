@@ -1,16 +1,7 @@
 import { Box, IconButton } from "@mui/material";
-import { Typography, styleTypographyWithBorder } from "./styles";
+import { Typography } from "./styles";
 import CancelIcon from "@mui/icons-material/Cancel";
-
-export const ProductItem = () => {
-  return (
-    <>
-      <Typography sx={{ ...styleTypographyWithBorder }}>NAME</Typography>
-      <Typography>name</Typography>
-      <Typography>SKU</Typography>
-    </>
-  );
-};
+import { Customer } from "../../services/customer/customerService";
 
 export const RemoveProductItem = () => {
   return (
@@ -39,4 +30,11 @@ export const BottomItem = ({ title, result, Action }: BottomItemProps) => {
       {Action && Action}
     </Box>
   );
+};
+
+export const formatCustomerOption = (customers: Customer[]) => {
+  return customers.map((customer) => ({
+    value: customer.id,
+    label: customer.first_name,
+  }));
 };

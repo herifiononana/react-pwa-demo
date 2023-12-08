@@ -30,22 +30,6 @@ interface RemoveItemRequest {
 // todo: move to another file
 const url = "https://fredallard.kinsta.cloud/pos/api/cart-view.php";
 
-const getOneProduct = async (id: number) => {
-  const product = await ProductService.getProducts(id);
-  return product[0];
-};
-
-const getProductsCustomer = async (
-  products: { id: number; total: number }[]
-) => {
-  const productsPromise = products.map(async (product) => {
-    const response = await getOneProduct(product.id);
-    return { product: response, total: product.total };
-  });
-
-  return await Promise.all(productsPromise);
-};
-
 const CartService = {
   getCart: async (customer_id: number): Promise<Cart> => {
     const data = new FormData();
@@ -69,9 +53,9 @@ const CartService = {
             return product;
           }
         );
-        console.log("productIds :>> ", productIds);
-        const products = await getProductsCustomer(productIds);
-        console.log("products in service:>> ", products);
+
+        const products = await ProductService.getProductsCustomer(productIds);
+
         return {
           ...response.data,
           data: [...products],

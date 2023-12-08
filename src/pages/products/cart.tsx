@@ -10,44 +10,36 @@ import TuneIcon from "@mui/icons-material/Tune";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { BoxFlex, ButtonText, Typography } from "./styles";
-import { BottomItem, ProductItem, RemoveProductItem } from "./cartUtil";
+import {
+  BottomItem,
+  RemoveProductItem,
+  formatCustomerOption,
+} from "./cartUtil";
 import { Columns, ListItem } from "../../components/ListView";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store/store";
 import Select from "react-select";
 import COLORS from "../../styles/color";
-import { Customer } from "../../services/customer/customerService";
 import { getCustomers } from "../../features/customer/customerAction";
 import CloseIcon from "@mui/icons-material/Close";
 import { getCart } from "../../features/cart/cartAction";
-import ProductService, { Product } from "../../services/product/productService";
-import { Cart as ICart } from "../../services/cart/cartService";
 import { getProducts } from "../../features/product/productAction";
 import { ProductTitleCell } from "../../components/datagridCell";
 import { formatAmount } from "../../utils/utils";
 
 // todo: refactor react-select component
 
-const formatCustomerOption = (customers: Customer[]) => {
-  return customers.map((customer) => ({
-    value: customer.id,
-    label: customer.first_name,
-  }));
-};
-
-// todo: define cartState type
+interface Option {
+  value: number;
+  label: string;
+}
 function Cart() {
   const dispatch = useAppDispatch();
-  const [selectedCustomer, setSelectedCustomer] = useState<{
-    value: number;
-    label: string;
-  } | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Option | null>(null);
   const { data: customers } = useSelector((state: RootState) => state.customer);
-  const {
-    status,
-    data: cart,
-    error,
-  } = useSelector((state: RootState) => state.getCart);
+  const { status, data: cart } = useSelector(
+    (state: RootState) => state.getCart
+  );
 
   const handleChange = (selectedOption: any) => {
     setSelectedCustomer({
@@ -63,7 +55,7 @@ function Cart() {
 
   useEffect(() => {
     if (selectedCustomer?.value) dispatch(getCart(selectedCustomer?.value));
-  }, [selectedCustomer]);
+  }, [selectedCustomer, dispatch]);
 
   return (
     <>
@@ -159,33 +151,36 @@ function Cart() {
           {status === "loading" ? (
             <CircularProgress />
           ) : (
-            cart?.data.map((data: any, index: number) => (
-              <ListItem
-                key={index}
-                data={data?.product}
-                even={index % 2 === 0}
-                TitleView={
-                  <ProductTitleCell
-                    title={data?.product?.product_name || ""}
-                    category={data?.product?.product_category || ""}
+            cart?.data.map(
+              (data: any, index: number) =>
+                selectedCustomer && (
+                  <ListItem
+                    key={index}
+                    data={data?.product}
+                    even={index % 2 === 0}
+                    TitleView={
+                      <ProductTitleCell
+                        title={data?.product?.product_name || ""}
+                        category={data?.product?.product_category || ""}
+                      />
+                    }
+                    SecondContent={
+                      <Typography
+                        sx={{
+                          fontSize: ".8rem",
+                          textAlign: "center",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {formatAmount(parseInt(data?.total || "0"))}
+                      </Typography>
+                    }
+                    ActionView={<RemoveProductItem />}
                   />
-                }
-                SecondContent={
-                  <Typography
-                    sx={{
-                      fontSize: ".8rem",
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {formatAmount(parseInt(data?.total || "0"))}
-                  </Typography>
-                }
-                ActionView={<RemoveProductItem />}
-              />
-            ))
+                )
+            )
           )}
         </Box>
         <Box sx={{ marginBottom: 1 }}>

@@ -28,6 +28,20 @@ const ProductService = {
       throw error;
     }
   },
+
+  getProductsCustomer: async (products: { id: number; total: number }[]) => {
+    try {
+      const productsPromise = products.map(async (product) => {
+        const response = await ProductService.getProducts(product.id);
+        return { product: response[0], total: product.total };
+      });
+
+      return await Promise.all(productsPromise);
+    } catch (error) {
+      console.error("Error when retrieving products in cart:", error);
+      throw error;
+    }
+  },
   //  todo: add other method (CRUD)
 };
 

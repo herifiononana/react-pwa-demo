@@ -23,10 +23,6 @@ interface UpdateItemRequest {
   quantity: number;
 }
 
-interface RemoveItemRequest {
-  key: string; // Unique key to item in basket
-}
-
 // todo: move to another file
 const url = "https://fredallard.kinsta.cloud/pos/api/cart-view.php";
 
@@ -135,32 +131,36 @@ const CartService = {
     }
   },
 
-  removeItem: async (requestData: RemoveItemRequest): Promise<void> => {
+  removeProduct: async ({
+    customer_id,
+    product_id,
+  }: AddProductRequest): Promise<AxiosResponse> => {
     try {
-      const removeItemUrl = `${url}/remove-item`;
-      const accessToken = LocalStorage.getToken();
+      const removeProductUrl =
+        "https://fredallard.kinsta.cloud/pos/api/cart-remove.php";
+      const data = new FormData();
+      data.append("customer_id", customer_id.toString());
+      data.append("product_id", product_id.toString());
 
-      const response: AxiosResponse = await axios.post(
-        removeItemUrl,
-        requestData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response: AxiosResponse = await axios.post(removeProductUrl, data, {
+        baseURL: "",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status !== 200) {
         console.error(
-          "Unexpected response when removing the item from the basket:",
+          "Unexpected response when adding product to cart:",
           response
         );
-        throw new Error("Error deleting item from cart.");
+        throw new Error("Error adding product to cart.");
       }
+
+      return response.data;
     } catch (error) {
-      console.error("Error deleting item from cart:", error);
-      throw new Error("Error deleting item from cart.");
+      console.error("Error adding product to cart :", error);
+      throw new Error("Error adding product to cart.");
     }
   },
 

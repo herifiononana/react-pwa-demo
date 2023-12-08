@@ -3,6 +3,10 @@ import { Typography } from "./styles";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Customer } from "../../services/customer/customerService";
 import { CustomerOption } from "../../features/customer/currentCustomerSlice";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../store/store";
+import CartService from "../../services/cart/cartService";
+import { getCart } from "../../features/cart/cartAction";
 // export interface Option {
 //   value: number;
 //   label: string;
@@ -14,9 +18,23 @@ interface BottomItemProps {
   Action?: JSX.Element;
 }
 
-export const RemoveProductItem = () => {
+export const RemoveProductItem = ({ id }: { id: number }) => {
+  const dispatch = useAppDispatch();
+  const { data: currentCustomer } = useSelector(
+    (state: RootState) => state.currentCustomer
+  );
+
+  const removeProduct = async () => {
+    if (currentCustomer) {
+      await CartService.removeProduct({
+        product_id: id,
+        customer_id: currentCustomer?.value,
+      });
+      dispatch(getCart(currentCustomer?.value));
+    }
+  };
   return (
-    <IconButton>
+    <IconButton onClick={removeProduct}>
       <CancelIcon sx={{ color: "#cf1124" }} />
     </IconButton>
   );

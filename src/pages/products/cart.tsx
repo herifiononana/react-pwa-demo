@@ -59,7 +59,10 @@ function Cart() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentCustomer?.value) dispatch(getCart(currentCustomer?.value));
+    if (currentCustomer?.value) {
+      dispatch(getCart(currentCustomer?.value));
+      // setLoading(true);
+    }
   }, [currentCustomer, dispatch]);
 
   return (
@@ -186,7 +189,11 @@ function Cart() {
                         {formatAmount(parseInt(data?.total || "0"))}
                       </Typography>
                     }
-                    ActionView={<RemoveProductItem />}
+                    ActionView={
+                      <RemoveProductItem
+                        id={parseInt(data?.product?.product_id)}
+                      />
+                    }
                   />
                 )
             )

@@ -28,6 +28,10 @@ const customerSlice = createSlice({
       state.status = "failed";
       state.error = action.payload as string;
     },
+    setCurrentCustomer: (state, action: PayloadAction<Customer[]>) => {
+      state.status = "succeeded";
+      state.data = action.payload;
+    },
   },
 });
 

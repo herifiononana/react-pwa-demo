@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -23,39 +23,44 @@ import COLORS from "../../styles/color";
 import { getCustomers } from "../../features/customer/customerAction";
 import CloseIcon from "@mui/icons-material/Close";
 import { getCart } from "../../features/cart/cartAction";
-import { getProducts } from "../../features/product/productAction";
 import { ProductTitleCell } from "../../components/datagridCell";
 import { formatAmount } from "../../utils/utils";
+import {
+  CustomerOption,
+  cleatCurrentCustomer,
+  setCurrentCustomer,
+} from "../../features/customer/currentCustomerSlice";
 
 // todo: refactor react-select component
 
-interface Option {
-  value: number;
-  label: string;
-}
 function Cart() {
   const dispatch = useAppDispatch();
-  const [selectedCustomer, setSelectedCustomer] = useState<Option | null>(null);
   const { data: customers } = useSelector((state: RootState) => state.customer);
+  const options = formatCustomerOption(customers);
+  const { data: currentCustomer } = useSelector(
+    (state: RootState) => state.currentCustomer
+  );
+
   const { status, data: cart } = useSelector(
     (state: RootState) => state.getCart
   );
 
   const handleChange = (selectedOption: any) => {
-    setSelectedCustomer({
-      value: selectedOption.value,
-      label: selectedOption.label,
-    });
+    dispatch(
+      setCurrentCustomer({
+        value: selectedOption.value,
+        label: selectedOption.label,
+      } as CustomerOption)
+    );
   };
 
   useEffect(() => {
     dispatch(getCustomers());
-    dispatch(getProducts());
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedCustomer?.value) dispatch(getCart(selectedCustomer?.value));
-  }, [selectedCustomer, dispatch]);
+    if (currentCustomer?.value) dispatch(getCart(currentCustomer?.value));
+  }, [currentCustomer, dispatch]);
 
   return (
     <>
@@ -78,7 +83,7 @@ function Cart() {
               textAlign: "left",
             }}
           >
-            {selectedCustomer?.value ? (
+            {currentCustomer?.value ? (
               <Box
                 sx={{
                   display: "flex",
@@ -94,9 +99,13 @@ function Cart() {
                     backgroundColor: "primary.main",
                   }}
                 >
-                  {selectedCustomer.label}
+                  {currentCustomer.label}
                 </MUITypography>
-                <IconButton onClick={() => setSelectedCustomer(null)}>
+                <IconButton
+                  onClick={() => {
+                    dispatch(cleatCurrentCustomer());
+                  }}
+                >
                   <CloseIcon sx={{ color: "primary.main" }} />
                 </IconButton>
               </Box>
@@ -110,7 +119,7 @@ function Cart() {
                 isRtl={false}
                 isSearchable={true}
                 name="product"
-                options={formatCustomerOption(customers)}
+                options={options}
                 placeholder="Select customer"
                 styles={{
                   control: (baseStyles, state) => ({
@@ -153,7 +162,7 @@ function Cart() {
           ) : (
             cart?.data.map(
               (data: any, index: number) =>
-                selectedCustomer && (
+                currentCustomer && (
                   <ListItem
                     key={index}
                     data={data?.product}

@@ -1,4 +1,5 @@
 import { GridColDef, GridColumnHeaderParams } from "@mui/x-data-grid";
+import { toast } from "react-toastify";
 
 export const createColumn = (field: string): GridColDef => ({
   field,
@@ -41,4 +42,21 @@ export const formatAmount = (number: number) => {
   const formattedNumber = number.toFixed(2);
 
   return `$${formattedNumber}`;
+};
+
+export const showToast = (type: string, message: string) => {
+  switch (type) {
+    case "success":
+      toast.success(message, { autoClose: 1000 });
+      break;
+    case "warning":
+      toast.warning(message, { autoClose: 1000 });
+      break;
+    case "error":
+      toast.error(message, { autoClose: 1000 });
+      break;
+    default:
+      toast.info(message, { autoClose: 1000 });
+      break;
+  }
 };

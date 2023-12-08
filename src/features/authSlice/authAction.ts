@@ -2,6 +2,7 @@ import { ThunkAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
 import authService from "../../services/auth/authService";
 import { loginStart, loginSuccess, loginFailure } from "./authSlice";
+import { showToast } from "../../utils/utils";
 
 export const loginUser =
   (credentials: {
@@ -12,8 +13,13 @@ export const loginUser =
     dispatch(loginStart());
     try {
       const userData = await authService.login(credentials);
-      if (userData?.data) dispatch(loginSuccess(userData));
-      else dispatch(loginFailure("Invalid credential"));
+      if (userData?.data) {
+        showToast("success", "successful login");
+        dispatch(loginSuccess(userData));
+      } else {
+        showToast("error", "Invalid credential");
+        dispatch(loginFailure("Invalid credential"));
+      }
     } catch (error) {
       dispatch(loginFailure(error as string));
     }

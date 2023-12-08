@@ -7,10 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store/store";
 import CartService from "../../services/cart/cartService";
 import { getCart } from "../../features/cart/cartAction";
-// export interface Option {
-//   value: number;
-//   label: string;
-// }
+import { showToast } from "../../utils/utils";
+import { toastMessage } from "../../constants/message";
 
 interface BottomItemProps {
   title: string;
@@ -26,10 +24,16 @@ export const RemoveProductItem = ({ id }: { id: number }) => {
 
   const removeProduct = async () => {
     if (currentCustomer) {
-      await CartService.removeProduct({
+      const response = await CartService.removeProduct({
         product_id: id,
         customer_id: currentCustomer?.value,
       });
+
+      response.status &&
+        showToast(
+          "success",
+          response?.message || toastMessage.cart.removeProductSuccess
+        );
       dispatch(getCart(currentCustomer?.value));
     }
   };

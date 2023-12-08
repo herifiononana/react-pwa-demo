@@ -17,6 +17,8 @@ import COLORS from "../../styles/color";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import CartService from "../../services/cart/cartService";
+import { showToast } from "../../utils/utils";
+import { toastMessage } from "../../constants/message";
 
 const Typography = styled(MUITypography)({
   whiteSpace: "nowrap",
@@ -120,13 +122,17 @@ export function AddToCartCell({ id }: { id: number }) {
   );
 
   const addToCart = async () => {
-    let response: any = null;
-    if (currentCustomer)
-      response = await CartService.addProduct({
+    if (currentCustomer) {
+      const response = await CartService.addProduct({
         customer_id: currentCustomer?.value,
         product_id: id,
       });
-    return response;
+      response.status === true &&
+        showToast(
+          "success",
+          response?.message || toastMessage.cart.addProductSuccess
+        );
+    }
   };
 
   return (

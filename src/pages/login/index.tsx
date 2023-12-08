@@ -31,11 +31,8 @@ interface Credential {
 }
 
 const validationSchema = yup.object({
-  email: yup
-    .string()
-    // .email("Doit être un email valide")
-    .required("Email obligatoire"),
-  password: yup.string().trim().required("Mot de passe obligatoire"),
+  email: yup.string().required("Email required"),
+  password: yup.string().trim().required("Password required"),
 });
 
 const initialValues: Credential = {
@@ -46,7 +43,7 @@ const initialValues: Credential = {
 function Login() {
   const { isAuthenticated, logedIn } = useAuth();
   const dispatch = useAppDispatch();
-  const { error, status, user } = useSelector((state: RootState) => state.auth);
+  const { status, user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     user && logedIn();
@@ -124,9 +121,6 @@ function Login() {
               onChange={handleChange}
             />
           </MUIContainer>
-          {error && (
-            <ErrorMessage sx={{ textAlign: "center" }}>{error}</ErrorMessage>
-          )}
           <MUIContainer
             sx={{
               display: "flex",

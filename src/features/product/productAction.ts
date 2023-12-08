@@ -11,7 +11,7 @@ export const getProducts =
   (): ThunkAction<void, RootState, unknown, any> => async (dispatch) => {
     dispatch(getProductsStart());
     try {
-      const data: Product[] = await ProductService.getProducts({});
+      const data: Product[] = await ProductService.getProducts();
       if (data.length) {
         dispatch(getProductsSuccess(data));
       }

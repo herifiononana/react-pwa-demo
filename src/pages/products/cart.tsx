@@ -19,6 +19,12 @@ import COLORS from "../../styles/color";
 import { Customer } from "../../services/customer/customerService";
 import { getCustomers } from "../../features/customer/customerAction";
 import CloseIcon from "@mui/icons-material/Close";
+import { getCart } from "../../features/cart/cartAction";
+import ProductService, { Product } from "../../services/product/productService";
+import { Cart as ICart } from "../../services/cart/cartService";
+import { getProducts } from "../../features/product/productAction";
+import { ProductTitleCell } from "../../components/datagridCell";
+import { formatAmount } from "../../utils/utils";
 
 // todo: refactor react-select component
 
@@ -28,19 +34,36 @@ const formatCustomerOption = (customers: Customer[]) => {
     label: customer.first_name,
   }));
 };
+
+// todo: define cartState type
 function Cart() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [customerSelected, setCustomerSelected] = useState<any>(null);
   const dispatch = useAppDispatch();
+  const [selectedCustomer, setSelectedCustomer] = useState<{
+    value: number;
+    label: string;
+  } | null>(null);
   const { data: customers } = useSelector((state: RootState) => state.customer);
+  const {
+    status,
+    data: cart,
+    error,
+  } = useSelector((state: RootState) => state.getCart);
 
   const handleChange = (selectedOption: any) => {
-    setCustomerSelected(selectedOption);
+    setSelectedCustomer({
+      value: selectedOption.value,
+      label: selectedOption.label,
+    });
   };
 
   useEffect(() => {
     dispatch(getCustomers());
+    dispatch(getProducts());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedCustomer?.value) dispatch(getCart(selectedCustomer?.value));
+  }, [selectedCustomer]);
 
   return (
     <>
@@ -63,7 +86,7 @@ function Cart() {
               textAlign: "left",
             }}
           >
-            {customerSelected ? (
+            {selectedCustomer?.value ? (
               <Box
                 sx={{
                   display: "flex",
@@ -79,9 +102,9 @@ function Cart() {
                     backgroundColor: "primary.main",
                   }}
                 >
-                  {customerSelected.label}
+                  {selectedCustomer.label}
                 </MUITypography>
-                <IconButton onClick={() => setCustomerSelected(null)}>
+                <IconButton onClick={() => setSelectedCustomer(null)}>
                   <CloseIcon sx={{ color: "primary.main" }} />
                 </IconButton>
               </Box>
@@ -133,16 +156,33 @@ function Cart() {
           }}
         >
           <Columns firstCol={"PRODUCT"} secondCol={"TOTAL"} />
-          {loading ? (
+          {status === "loading" ? (
             <CircularProgress />
           ) : (
-            [1, 1].map((product, index) => (
+            cart?.data.map((data: any, index: number) => (
               <ListItem
                 key={index}
-                data={product}
+                data={data?.product}
                 even={index % 2 === 0}
-                TitleView={<ProductItem />}
-                SecondContent={<Typography>$1.00</Typography>}
+                TitleView={
+                  <ProductTitleCell
+                    title={data?.product?.product_name || ""}
+                    category={data?.product?.product_category || ""}
+                  />
+                }
+                SecondContent={
+                  <Typography
+                    sx={{
+                      fontSize: ".8rem",
+                      textAlign: "center",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {formatAmount(parseInt(data?.total || "0"))}
+                  </Typography>
+                }
                 ActionView={<RemoveProductItem />}
               />
             ))

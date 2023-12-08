@@ -3,6 +3,8 @@ import "./App.css";
 import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "./provider/ThemeProvider";
 import RouterProvider from "./routes";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AuthProvider } from "./provider/AuthProvider";
@@ -17,6 +19,7 @@ function App() {
       <AuthProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <ThemeProvider theme={theme}>
+            <ToastContainer />
             <RouterProvider />
           </ThemeProvider>
         </LocalizationProvider>

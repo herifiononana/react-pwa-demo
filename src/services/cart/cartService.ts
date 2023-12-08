@@ -7,6 +7,7 @@ import ProductService from "../product/productService";
 export interface Cart {
   // ... other cart field
   status: boolean;
+  message?: string;
   data: any;
   discount: number;
   taxes: number;
@@ -72,7 +73,7 @@ const CartService = {
   addProduct: async ({
     customer_id,
     product_id,
-  }: AddProductRequest): Promise<AxiosResponse> => {
+  }: AddProductRequest): Promise<Cart> => {
     try {
       const addProductUrl =
         "https://fredallard.kinsta.cloud/pos/api/cart-add.php";
@@ -95,7 +96,7 @@ const CartService = {
         throw new Error("Error adding product to cart.");
       }
 
-      return response.data;
+      return response.data as Cart;
     } catch (error) {
       console.error("Error adding product to cart :", error);
       throw new Error("Error adding product to cart.");
@@ -134,7 +135,7 @@ const CartService = {
   removeProduct: async ({
     customer_id,
     product_id,
-  }: AddProductRequest): Promise<AxiosResponse> => {
+  }: AddProductRequest): Promise<Cart> => {
     try {
       const removeProductUrl =
         "https://fredallard.kinsta.cloud/pos/api/cart-remove.php";
@@ -157,6 +158,7 @@ const CartService = {
         throw new Error("Error adding product to cart.");
       }
 
+      console.log("response.data :>> ", response.data);
       return response.data;
     } catch (error) {
       console.error("Error adding product to cart :", error);

@@ -158,7 +158,6 @@ const CartService = {
         throw new Error("Error adding product to cart.");
       }
 
-      console.log("response.data :>> ", response.data);
       return response.data;
     } catch (error) {
       console.error("Error adding product to cart :", error);

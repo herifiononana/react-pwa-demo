@@ -14,6 +14,9 @@ import styled from "@emotion/styled";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import BrokenImageIcon from "@mui/icons-material/BrokenImage";
 import COLORS from "../../styles/color";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import CartService from "../../services/cart/cartService";
 
 const Typography = styled(MUITypography)({
   whiteSpace: "nowrap",
@@ -111,11 +114,26 @@ export function ProductTitleCell({
   );
 }
 
-// todo: add action props
-export function AddToCartCell({ id }: { id: string | number }) {
+export function AddToCartCell({ id }: { id: number }) {
+  const { data: currentCustomer } = useSelector(
+    (state: RootState) => state.currentCustomer
+  );
+
+  const addToCart = async () => {
+    let response: any = null;
+    if (currentCustomer)
+      response = await CartService.addProduct({
+        customer_id: currentCustomer?.value,
+        product_id: id,
+      });
+    return response;
+  };
+
   return (
-    <IconButton>
-      <AddCircleIcon sx={{ color: "#0c6b58" }} />
+    <IconButton disabled={!currentCustomer} onClick={addToCart}>
+      <AddCircleIcon
+        sx={{ color: currentCustomer ? "#0c6b58" : COLORS.background.disabled }}
+      />
     </IconButton>
   );
 }

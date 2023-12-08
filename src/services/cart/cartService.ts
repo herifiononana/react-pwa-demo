@@ -73,21 +73,23 @@ const CartService = {
     }
   },
 
-  addProduct: async (requestData: AddProductRequest): Promise<void> => {
-    const accessToken = LocalStorage.getToken();
+  addProduct: async ({
+    customer_id,
+    product_id,
+  }: AddProductRequest): Promise<AxiosResponse> => {
     try {
-      const addProductUrl = `${url}/add`;
+      const addProductUrl =
+        "https://fredallard.kinsta.cloud/pos/api/cart-add.php";
+      const data = new FormData();
+      data.append("customer_id", customer_id.toString());
+      data.append("product_id", product_id.toString());
 
-      const response: AxiosResponse = await axios.post(
-        addProductUrl,
-        requestData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response: AxiosResponse = await axios.post(addProductUrl, data, {
+        baseURL: "",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status !== 200) {
         console.error(
@@ -96,6 +98,8 @@ const CartService = {
         );
         throw new Error("Error adding product to cart.");
       }
+
+      return response.data;
     } catch (error) {
       console.error("Error adding product to cart :", error);
       throw new Error("Error adding product to cart.");

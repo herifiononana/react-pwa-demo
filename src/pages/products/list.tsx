@@ -96,7 +96,9 @@ function List() {
                       {formatAmount(parseInt(product.product_price || "0"))}
                     </Typography>
                   }
-                  ActionView={<AddToCartCell id={product.product_id} />}
+                  ActionView={
+                    <AddToCartCell id={parseInt(product.product_id)} />
+                  }
                 />
               )
             )

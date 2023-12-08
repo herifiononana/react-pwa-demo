@@ -2,13 +2,13 @@ import { Box, IconButton } from "@mui/material";
 import { Typography } from "./styles";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Customer } from "../../services/customer/customerService";
-import { CustomerOption } from "../../features/customer/currentCustomerSlice";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store/store";
 import CartService from "../../services/cart/cartService";
 import { getCart } from "../../features/cart/cartAction";
 import { showToast } from "../../utils/utils";
 import { toastMessage } from "../../constants/message";
+import { SearchOption } from "../../type/types";
 
 interface BottomItemProps {
   title: string;
@@ -60,14 +60,12 @@ export const BottomItem = ({ title, result, Action }: BottomItemProps) => {
   );
 };
 
-export const formatCustomerOption = (
-  customers: Customer[]
-): CustomerOption[] => {
+export const formatCustomerOption = (customers: Customer[]): SearchOption[] => {
   return customers.map(
     (customer) =>
       ({
         value: customer.id,
         label: customer.first_name,
-      } as CustomerOption)
+      } as SearchOption)
   );
 };

@@ -216,9 +216,12 @@ function Cart() {
               </IconButton>
             }
           />
-          <BottomItem title={"Subtotal:"} result="$147.05" />
-          <BottomItem title={"Discount:"} result="-$-18.00" />
-          <BottomItem title={"Taxes:"} result="excl. US $14.71" />
+          <BottomItem
+            title={"Subtotal:"}
+            result={String(cart?.subtotal) || ""}
+          />
+          <BottomItem title={"Discount:"} result={String(cart?.discount)} />
+          <BottomItem title={"Taxes:"} result={String(cart?.taxes)} />
         </Box>
         <BoxFlex>
           <Button variant="outlined">Order Note</Button>

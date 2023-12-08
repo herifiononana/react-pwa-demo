@@ -1,13 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface CustomerOption {
-  value: number;
-  label: string;
-}
+import { SearchOption } from "../../type/types";
 
 interface CurrentCustomer {
   status: "idle" | "loading" | "succeeded" | "failed";
-  data: CustomerOption | null;
+  data: SearchOption | null;
   error: string | null;
 }
 
@@ -21,7 +17,7 @@ const CurrentCustomerSlice = createSlice({
   name: "currentCustomer",
   initialState,
   reducers: {
-    setCurrentCustomer: (state, action: PayloadAction<CustomerOption>) => {
+    setCurrentCustomer: (state, action: PayloadAction<SearchOption>) => {
       state.status = "succeeded";
       state.data = action.payload;
     },

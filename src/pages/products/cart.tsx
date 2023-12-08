@@ -1,13 +1,6 @@
 import React, { useEffect } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Typography as MUITypography,
-} from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import CircularProgress from "../../components/progress";
-import TuneIcon from "@mui/icons-material/Tune";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { BoxFlex, ButtonText, Typography } from "./styles";
 import {
@@ -18,20 +11,15 @@ import {
 import { Columns, ListItem } from "../../components/ListView";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store/store";
-import Select from "react-select";
-import COLORS from "../../styles/color";
 import { getCustomers } from "../../features/customer/customerAction";
-import CloseIcon from "@mui/icons-material/Close";
 import { getCart } from "../../features/cart/cartAction";
 import { ProductTitleCell } from "../../components/datagridCell";
 import { formatAmount } from "../../utils/utils";
-import {
-  CustomerOption,
-  cleatCurrentCustomer,
-  setCurrentCustomer,
-} from "../../features/customer/currentCustomerSlice";
+import { setCurrentCustomer } from "../../features/customer/currentCustomerSlice";
+import Header from "../../components/customer/header";
+import { SearchOption } from "../../type/types";
 
-// todo: refactor react-select component
+// todo: refactor code
 
 function Cart() {
   const dispatch = useAppDispatch();
@@ -50,7 +38,7 @@ function Cart() {
       setCurrentCustomer({
         value: selectedOption.value,
         label: selectedOption.label,
-      } as CustomerOption)
+      } as SearchOption)
     );
   };
 
@@ -61,93 +49,13 @@ function Cart() {
   useEffect(() => {
     if (currentCustomer?.value) {
       dispatch(getCart(currentCustomer?.value));
-      // setLoading(true);
     }
   }, [currentCustomer, dispatch]);
 
   return (
     <>
       <Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 1,
-          }}
-        >
-          <MUITypography sx={{ color: "primary.main", marginRight: 0.5 }}>
-            Customer:
-          </MUITypography>
-          <Box
-            sx={{
-              zIndex: 1000,
-              width: "100%",
-              textAlign: "left",
-            }}
-          >
-            {currentCustomer?.value ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <MUITypography
-                  sx={{
-                    borderRadius: "25px",
-                    paddingInline: 1,
-                    color: COLORS.text.white,
-                    fontSize: ".9rem",
-                    backgroundColor: "primary.main",
-                  }}
-                >
-                  {currentCustomer.label}
-                </MUITypography>
-                <IconButton
-                  onClick={() => {
-                    dispatch(cleatCurrentCustomer());
-                  }}
-                >
-                  <CloseIcon sx={{ color: "primary.main" }} />
-                </IconButton>
-              </Box>
-            ) : (
-              <Select
-                className="basic-single"
-                classNamePrefix="select"
-                // onInputChange={handleInputChange}
-                onChange={handleChange}
-                isClearable={true}
-                isRtl={false}
-                isSearchable={true}
-                name="product"
-                options={options}
-                placeholder="Select customer"
-                styles={{
-                  control: (baseStyles, state) => ({
-                    ...baseStyles,
-                    borderColor: "#888",
-                    width: "100%",
-                  }),
-                  option: () => ({
-                    fontSize: ".9rem",
-                    margin: 20,
-                    color: COLORS.text.main,
-                  }),
-                }}
-              />
-            )}
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-            <IconButton sx={{ color: "primary.main" }}>
-              <PersonAddAlt1Icon />
-            </IconButton>
-            <IconButton sx={{ color: "primary.main" }}>
-              <TuneIcon />
-            </IconButton>
-          </Box>
-        </Box>
+        <Header {...{ currentCustomer, options, handleChange }} />
         <Box
           sx={{
             width: "100%",

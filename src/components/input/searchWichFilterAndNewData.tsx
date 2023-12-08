@@ -2,15 +2,10 @@ import React from "react";
 import { Box, Tooltip, IconButton } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import Select from "react-select";
 import { Customer } from "../../services/customer/customerService";
 import { formatCustomerOption } from "../../pages/products/cartUtil";
-import COLORS from "../../styles/color";
-
-export interface SearchOption {
-  value: string;
-  label: string;
-}
+import Autocomplete from "../autoComplete/Autocomplete";
+import { SearchOption } from "../../type/types";
 
 interface SearchAndFilterProps {
   data: Customer[];
@@ -38,32 +33,10 @@ function SearchWichFilterAndNewData({
         marginBottom: 2,
       }}
     >
-      <Box sx={{ width: "100%", zIndex: 10000 }}>
-        <Select
-          className="basic-single"
-          classNamePrefix="select"
-          onChange={handleChange}
-          isClearable={true}
-          isRtl={false}
-          isSearchable={true}
-          name="product"
-          options={options}
-          placeholder="Search customer"
-          styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              borderColor: "#888",
-              width: "100%",
-            }),
-            option: () => ({
-              fontSize: ".9rem",
-              margin: 20,
-              color: COLORS.text.main,
-            }),
-          }}
-        />
-      </Box>
-
+      <Autocomplete
+        placeholder="Search customer"
+        {...{ handleChange, options }}
+      />
       <Tooltip title="Add new customer">
         <IconButton onClick={() => setOpenModalCustomer(true)}>
           <PersonAddAlt1Icon sx={{ color: "primary.main" }} />

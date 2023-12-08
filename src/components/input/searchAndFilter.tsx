@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, IconButton } from "@mui/material";
-import Select from "react-select";
 import { Product } from "../../services/product/productService";
-import COLORS from "../../styles/color";
+import Autocomplete from "../autoComplete/Autocomplete";
 
 interface SearchOption {
   value: string;
@@ -18,8 +17,6 @@ interface SearchAndFilterProps {
 }
 
 function SearchAndFilter({ data, setSelectedProduct }: SearchAndFilterProps) {
-  const [isDisabled] = useState(false);
-  const [isLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const transformProductOptions = (searchTerm: string) => {
@@ -57,34 +54,10 @@ function SearchAndFilter({ data, setSelectedProduct }: SearchAndFilterProps) {
         alignItems: "center",
       }}
     >
-      <Box sx={{ width: "100%", zIndex: 10000 }}>
-        <Select
-          className="basic-single"
-          classNamePrefix="select"
-          onInputChange={handleInputChange}
-          onChange={handleChange}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          isClearable={true}
-          isRtl={false}
-          isSearchable={true}
-          name="product"
-          options={options}
-          placeholder="Search Products"
-          styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              borderColor: "#888",
-              width: "100%",
-            }),
-            option: () => ({
-              fontSize: ".9rem",
-              margin: 20,
-              color: COLORS.text.main,
-            }),
-          }}
-        />
-      </Box>
+      <Autocomplete
+        placeholder="Search Product"
+        {...{ options, handleChange, handleInputChange }}
+      />
       <IconButton>
         <TuneIcon sx={{ color: "primary.main" }} />
       </IconButton>
